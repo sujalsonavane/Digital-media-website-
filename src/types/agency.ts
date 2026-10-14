@@ -25,6 +25,14 @@ export interface ProjectItem {
   discipline: string;
   artType: ArtDirectionType;
   stagger?: boolean;
+  client?: string;
+  year?: string;
+  overview?: string;
+  challenge?: string;
+  solution?: string;
+  results?: string[];
+  techStack?: string[];
+  conceptType?: string;
 }
 
 export interface ArchiveItem {
@@ -38,7 +46,11 @@ export interface ArchiveItem {
 export interface EnquirySubmission {
   name: string;
   email: string;
+  company?: string;
   services: ServiceCategory[];
+  budget?: string;
+  timeline?: string;
+  message?: string;
 }
 
 export interface SocialLink {

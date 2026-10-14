@@ -130,7 +130,10 @@ export default function HeroSection() {
       <HeaderNav />
 
       {/* Monumental Headline & Studio Kicker Lockup (Exact Awake Reference Layout) */}
-      <div className="my-auto py-4 sm:py-6 z-[5] flex flex-col justify-center">
+      <h1
+        aria-label="We build websites people remember. Luminous Digital Studio."
+        className="my-auto py-4 sm:py-6 z-[5] flex flex-col justify-center font-normal"
+      >
         {/* Desktop & Tablet Layout (>= 640px) */}
         <div className="hidden sm:block font-extrabold uppercase select-none text-[clamp(3.1rem,6.6vw,6.4rem)] leading-[0.93]">
           {/* Row 1: WE (left) ... BUILD (right) */}
@@ -196,7 +199,7 @@ export default function HeroSection() {
             </p>
           </div>
         </div>
-      </div>
+      </h1>
 
       {/* Bottom Metadata Bar with Animated Scaled Rule (Exact Awake Reference Match) */}
       <div className="relative pt-3 sm:pt-4 z-10 pb-1 sm:pb-0">

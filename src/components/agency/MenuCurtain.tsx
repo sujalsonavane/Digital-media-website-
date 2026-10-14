@@ -45,13 +45,13 @@ export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
       aria-modal="true"
       aria-label="Site Navigation"
       aria-hidden={!isOpen}
-      className={`fixed inset-[var(--frame)] bg-[#ff003d] text-white rounded-[var(--r-panel)] z-[1000] flex flex-col justify-between p-6 sm:p-10 md:p-14 shadow-2xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] select-none overflow-hidden ${
+      className={`fixed inset-0 sm:inset-[var(--frame)] h-dvh max-h-screen bg-[#ff003d] text-white sm:rounded-[var(--r-panel)] z-[1000] flex flex-col shadow-2xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] select-none overflow-hidden ${
         isOpen
           ? 'opacity-100 pointer-events-auto translate-y-0 scale-100'
           : 'opacity-0 pointer-events-none -translate-y-full scale-[0.98]'
       }`}
     >
-      {/* Background Faint Pink Spline Loop (Matching Awake Reference frame 022) */}
+      {/* Background Faint Pink Spline Loop */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none opacity-20"
         viewBox="0 0 1200 800"
@@ -67,8 +67,8 @@ export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
         />
       </svg>
 
-      {/* Top Header: Brandmark on left, Action pills on right (Matching Awake Reference frame 022) */}
-      <div className="relative z-10 flex justify-between items-center">
+      {/* Top Header: Sticky & Shrink-0 so Close button is NEVER pushed off-screen */}
+      <div className="relative z-20 shrink-0 flex justify-between items-center px-6 sm:px-10 md:px-14 pt-6 pb-4 sm:pt-8 sm:pb-6 border-b border-white/10 bg-[#ff003d]/80 backdrop-blur-md">
         <div className="flex items-center gap-3">
           <Image
             src="/images/luminous-mark.png"
@@ -93,75 +93,78 @@ export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
             onClick={onClose}
             type="button"
             aria-label="Close navigation menu"
-            className="bg-white text-[#ff003d] font-bold text-xs sm:text-sm px-5 py-2 rounded-full cursor-pointer hover:bg-neutral-100 hover:scale-105 active:scale-95 transition-all shadow-sm flex items-center gap-1.5"
+            className="bg-white text-[#ff003d] font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full cursor-pointer hover:bg-neutral-100 hover:scale-105 active:scale-95 transition-all shadow-md flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-white"
           >
             <span>close.</span>
-            <span>✕</span>
+            <span aria-hidden="true">✕</span>
           </button>
         </div>
       </div>
 
-      {/* Main Section: Brand Banner Card on Left (Desktop), Nav Links on Right */}
-      <div className="relative z-10 my-auto py-6 sm:py-8 flex flex-col lg:flex-row items-center justify-between gap-10 w-full">
-        <div className="hidden lg:flex flex-col gap-4 max-w-sm">
-          <div className="relative w-full aspect-[3.1/1] rounded-2xl overflow-hidden border border-white/20 shadow-xl bg-[#161d25]">
-            <Image
-              src="/images/luminous-brand-banner.png"
-              alt="Luminous Digital Studio"
-              fill
-              sizes="384px"
-              className="object-cover"
-            />
+      {/* Scrollable Content Container for Small & Tall Mobile Screens */}
+      <div className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden px-6 sm:px-10 md:px-14 py-6 sm:py-8 flex flex-col justify-between gap-8">
+        {/* Main Section: Brand Banner Card on Left (Desktop), Nav Links on Right */}
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 w-full my-auto">
+          <div className="hidden lg:flex flex-col gap-4 max-w-sm">
+            <div className="relative w-full aspect-[3.1/1] rounded-2xl overflow-hidden border border-white/20 shadow-xl bg-[#161d25]">
+              <Image
+                src="/images/luminous-brand-banner.png"
+                alt="Luminous Digital Studio"
+                fill
+                sizes="384px"
+                className="object-cover"
+              />
+            </div>
+            <p className="text-white/80 text-xs font-medium leading-relaxed">
+              Full-service digital media production studio partnering with ambitious brands across Web, App, Video, and Analytics.
+            </p>
           </div>
-          <p className="text-white/80 text-xs font-medium leading-relaxed">
-            Full-service digital media production studio partnering with ambitious brands across Web, App, Video, and Analytics.
-          </p>
+
+          <nav className="w-full lg:max-w-2xl">
+            <ul className="list-none flex flex-col gap-3 sm:gap-5 md:gap-6 items-start lg:items-end w-full">
+            {menuItems.map((item, idx) => {
+              const isHovered = hoveredIdx === idx;
+              return (
+                <li
+                  key={item.name}
+                  onMouseEnter={() => setHoveredIdx(idx)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                  style={{
+                    transitionDelay: isOpen ? `${idx * 40 + 80}ms` : '0ms',
+                  }}
+                  className={`transform transition-all duration-400 ease-out flex items-center justify-start lg:justify-end w-full ${
+                    isOpen ? 'translate-x-0 opacity-100' : 'translate-x-6 opacity-0'
+                  }`}
+                >
+                  <a
+                    href={item.url}
+                    onClick={onClose}
+                    className="group flex items-center gap-3 sm:gap-6 cursor-pointer py-1"
+                  >
+                    {/* Rotated Index Number */}
+                    <span className="text-[11px] sm:text-xs font-mono tracking-widest text-white/70 rotate-[-90deg] origin-center select-none">
+                      {item.index}
+                    </span>
+
+                    {/* Horizontal Connector Line (Desktop hover) */}
+                    <span
+                      className={`hidden lg:inline-block h-[2px] bg-white transition-all duration-300 origin-right ${
+                        isHovered ? 'w-12 sm:w-20 md:w-28 opacity-100' : 'w-0 opacity-0'
+                      }`}
+                    />
+
+                    {/* Main Link Text with Scaled Responsive Sizing */}
+                    <span className="font-display text-3xl sm:text-5xl md:text-6xl font-extrabold uppercase tracking-tight text-white transition-transform duration-200 group-hover:translate-x-2">
+                      {item.name}
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
         </div>
 
-        <nav className="w-full lg:max-w-2xl">
-          <ul className="list-none flex flex-col gap-4 sm:gap-6 md:gap-7 items-end">
-          {menuItems.map((item, idx) => {
-            const isHovered = hoveredIdx === idx;
-            return (
-              <li
-                key={item.name}
-                onMouseEnter={() => setHoveredIdx(idx)}
-                onMouseLeave={() => setHoveredIdx(null)}
-                style={{
-                  transitionDelay: isOpen ? `${idx * 40 + 100}ms` : '0ms',
-                }}
-                className={`transform transition-all duration-500 ease-out flex items-center justify-end w-full ${
-                  isOpen ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'
-                }`}
-              >
-                <a
-                  href={item.url}
-                  onClick={onClose}
-                  className="group flex items-center gap-4 sm:gap-6 cursor-pointer"
-                >
-                  {/* Rotated Index Number (00, 01, 02, 03) */}
-                  <span className="text-xs sm:text-sm font-mono tracking-widest text-white/70 rotate-[-90deg] origin-center select-none">
-                    {item.index}
-                  </span>
-
-                  {/* Horizontal Connector Line (Expands on Hover, matching Awake frame 022) */}
-                  <span
-                    className={`h-[2px] bg-white transition-all duration-300 origin-right ${
-                      isHovered ? 'w-12 sm:w-24 md:w-32 opacity-100' : 'w-0 opacity-0'
-                    }`}
-                  />
-
-                  {/* Main Link Text in Display Font */}
-                  <span className="font-display text-4xl sm:text-6xl md:text-7xl font-extrabold uppercase tracking-tight text-white transition-transform duration-300 group-hover:translate-x-2">
-                    {item.name}
-                  </span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-      </div>
 
       {/* Bottom Row: Contact on Left, Social on Right (Matching Awake Reference frame 022 & 024) */}
       <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs sm:text-sm pt-4 border-t border-white/20">
@@ -195,6 +198,7 @@ export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
             TWITTER
           </a>
         </div>
+      </div>
       </div>
     </div>
   );

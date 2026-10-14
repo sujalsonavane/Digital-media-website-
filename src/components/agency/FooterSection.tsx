@@ -134,9 +134,15 @@ export const FooterSection: React.FC = () => {
       <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] sm:text-xs font-semibold text-[#8c9196]">
         <span>{contact.legal}</span>
         <div className="flex items-center gap-6 uppercase tracking-wider text-[10px] sm:text-xs">
-          <span className="cursor-pointer hover:text-white transition-colors">PRIVACY</span>
-          <span className="cursor-pointer hover:text-white transition-colors">COOKIES</span>
-          <span className="cursor-pointer hover:text-white transition-colors">TERMS</span>
+          <Link href="/privacy" className="hover:text-white transition-colors">
+            PRIVACY
+          </Link>
+          <Link href="/cookies" className="hover:text-white transition-colors">
+            COOKIES
+          </Link>
+          <Link href="/terms" className="hover:text-white transition-colors">
+            TERMS
+          </Link>
         </div>
         <button
           onClick={scrollToTop}
