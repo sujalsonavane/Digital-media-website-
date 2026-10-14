@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { agencyConfig } from '@/data/agencyData';
-import { playClickSound } from '@/utils/sound';
 
 interface DisciplineOption {
   id: string;
@@ -12,32 +10,33 @@ interface DisciplineOption {
   description: string;
 }
 
+// Market-calibrated INR pricing for premium Indian digital studio builds
 const DISCIPLINES: DisciplineOption[] = [
   {
     id: 'web',
     name: 'High-Performance Website',
-    basePrice: 14000,
+    basePrice: 175000,
     baseWeeks: 4,
     description: 'Bespoke marketing flagship, headless CMS architecture, and conversion-optimized UX.',
   },
   {
     id: 'app',
     name: 'Full-Stack Web / Mobile App',
-    basePrice: 24000,
+    basePrice: 380000,
     baseWeeks: 7,
     description: 'Cross-platform iOS/Android app, reactive dashboard, and secure cloud API integration.',
   },
   {
     id: 'video',
     name: 'Cinematic Video & 3D VFX',
-    basePrice: 12000,
+    basePrice: 140000,
     baseWeeks: 3,
     description: 'Commercial brand film, 3D product visualization, motion reel, and color grading.',
   },
   {
     id: 'analytics',
     name: 'Digital Analytics Pipeline',
-    basePrice: 9000,
+    basePrice: 95000,
     baseWeeks: 3,
     description: 'End-to-end user telemetry, executive KPI dashboard, and revenue attribution modeling.',
   },
@@ -50,10 +49,10 @@ const SCALES = [
 ];
 
 const ADDONS = [
-  { id: 'motion', label: '3D WebGL & GSAP Motion Choreography', cost: 4500, extraWeeks: 1 },
-  { id: 'cms', label: 'Headless CMS & Custom Editorial Workflows', cost: 3500, extraWeeks: 1 },
-  { id: 'telemetry', label: 'Real-Time Telemetry & Drop-Off Funnels', cost: 4000, extraWeeks: 1 },
-  { id: 'express', label: 'Priority Sprint Delivery (Expedited Track)', cost: 5500, extraWeeks: -1.5 },
+  { id: 'motion', label: '3D WebGL & GSAP Motion Choreography', cost: 45000, extraWeeks: 1 },
+  { id: 'cms', label: 'Headless CMS & Custom Editorial Workflows', cost: 35000, extraWeeks: 1 },
+  { id: 'telemetry', label: 'Real-Time Telemetry & Drop-Off Funnels', cost: 40000, extraWeeks: 1 },
+  { id: 'express', label: 'Priority Sprint Delivery (Expedited Track)', cost: 55000, extraWeeks: -1.5 },
 ];
 
 export default function ProjectEstimator() {
@@ -62,7 +61,6 @@ export default function ProjectEstimator() {
   const [selectedAddons, setSelectedAddons] = useState<string[]>(['motion']);
 
   const toggleAddon = (id: string) => {
-    playClickSound();
     setSelectedAddons((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
@@ -82,17 +80,32 @@ export default function ProjectEstimator() {
   }, 0);
 
   const rawBase = Math.round(discipline.basePrice * scale.multiplier + addonsCost);
-  const lowEstimate = Math.round(rawBase * 0.9 / 500) * 500;
-  const highEstimate = Math.round(rawBase * 1.15 / 500) * 500;
+  // Round to nearest ₹5,000 for realistic agency ranges
+  const lowEstimate = Math.round((rawBase * 0.9) / 5000) * 5000;
+  const highEstimate = Math.round((rawBase * 1.15) / 5000) * 5000;
 
-  const totalWeeks = Math.max(2, Math.round(discipline.baseWeeks * (scale.multiplier > 1.5 ? 1.3 : 1.0) + addonsWeeks));
+  const totalWeeks = Math.max(
+    2,
+    Math.round(discipline.baseWeeks * (scale.multiplier > 1.5 ? 1.3 : 1.0) + addonsWeeks)
+  );
 
-  const formatCurrency = (val: number) => `$${val.toLocaleString()}`;
+  // Format INR according to standard Indian numbering (e.g. ₹1,80,000)
+  const formatINR = (val: number) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0,
+    }).format(val);
+  };
 
-  // Build direct WhatsApp message
-  const waAddonNames = selectedAddons.map((id) => ADDONS.find((a) => a.id === id)?.label).filter(Boolean).join(', ');
+  // WhatsApp bridge message pre-configured in INR
+  const waAddonNames = selectedAddons
+    .map((id) => ADDONS.find((a) => a.id === id)?.label)
+    .filter(Boolean)
+    .join(', ');
+
   const waText = encodeURIComponent(
-    `Hello Luminous Studio, I used your Project Estimator:\n\n• Type: ${discipline.name}\n• Scale: ${scale.label}\n• Addons: ${waAddonNames || 'None'}\n• Estimated Investment: ${formatCurrency(lowEstimate)} – ${formatCurrency(highEstimate)}\n• Target Delivery: ~${totalWeeks} Weeks\n\nCan we discuss availability for this build?`
+    `Hello Luminous Studio, I used your Project Estimator:\n\n• Type: ${discipline.name}\n• Scale: ${scale.label}\n• Addons: ${waAddonNames || 'None'}\n• Estimated Investment: ${formatINR(lowEstimate)} – ${formatINR(highEstimate)}\n• Target Delivery: ~${totalWeeks} Weeks\n\nCan we discuss availability for this build?`
   );
   const waEstimateUrl = `https://wa.me/919876543210?text=${waText}`;
 
@@ -100,21 +113,21 @@ export default function ProjectEstimator() {
     <section
       id="estimator"
       aria-label="Interactive Project Cost & Timeline Estimator"
-      className="estimator-panel relative z-20 bg-[#16181d] text-white rounded-[var(--r-panel)] px-[var(--inset)] py-14 sm:py-20 md:py-24 overflow-hidden select-none border-t border-white/10"
+      className="estimator-panel relative z-20 bg-[#16181d] text-white rounded-[var(--r-panel)] px-[var(--inset)] py-16 sm:py-24 md:py-28 overflow-hidden select-none border-t border-white/10"
     >
       <div className="max-w-6xl w-full mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 sm:mb-16 gap-4">
           <div>
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#ff003d] block mb-2">
-              [ Interactive Planning Matrix // 2026 ]
+              [ Interactive Planning Matrix // INR Estimates ]
             </span>
-            <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-white leading-none">
-              PROJECT ESTIMATOR
+            <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-white leading-none">
+              PROJECT ESTIMATOR.
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-[#8c9196] max-w-md font-medium leading-relaxed">
-            Configure your technical deliverables, scale, and acceleration to generate transparent investment benchmarks and delivery windows.
+            Configure your technical deliverables, scale, and acceleration to calculate transparent investment benchmarks and delivery windows in Indian Rupees (₹).
           </p>
         </div>
 
@@ -133,10 +146,7 @@ export default function ProjectEstimator() {
                     <button
                       key={item.id}
                       type="button"
-                      onClick={() => {
-                        playClickSound();
-                        setSelectedDiscipline(item.id);
-                      }}
+                      onClick={() => setSelectedDiscipline(item.id)}
                       className={`text-left p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
                         isSelected
                           ? 'bg-white text-[#111215] border-white shadow-xl scale-[1.02]'
@@ -147,11 +157,19 @@ export default function ProjectEstimator() {
                         <span className="font-bold text-sm sm:text-base tracking-tight">
                           {item.name}
                         </span>
-                        <span className={`text-[10px] font-mono font-bold uppercase ${isSelected ? 'text-[#ff003d]' : 'text-white/60'}`}>
-                          From {formatCurrency(item.basePrice)}
+                        <span
+                          className={`text-[10px] font-mono font-bold uppercase ${
+                            isSelected ? 'text-[#ff003d]' : 'text-white/60'
+                          }`}
+                        >
+                          From {formatINR(item.basePrice)}
                         </span>
                       </div>
-                      <p className={`text-xs leading-relaxed ${isSelected ? 'text-[#666f77]' : 'text-[#8c9196]'}`}>
+                      <p
+                        className={`text-xs leading-relaxed ${
+                          isSelected ? 'text-[#666f77]' : 'text-[#8c9196]'
+                        }`}
+                      >
                         {item.description}
                       </p>
                     </button>
@@ -172,10 +190,7 @@ export default function ProjectEstimator() {
                     <button
                       key={item.id}
                       type="button"
-                      onClick={() => {
-                        playClickSound();
-                        setSelectedScale(item.id);
-                      }}
+                      onClick={() => setSelectedScale(item.id)}
                       className={`text-left p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
                         isSelected
                           ? 'bg-[#ff003d] text-white border-[#ff003d] shadow-lg scale-[1.02]'
@@ -185,7 +200,11 @@ export default function ProjectEstimator() {
                       <span className="font-bold text-xs sm:text-sm tracking-tight block mb-1">
                         {item.label}
                       </span>
-                      <span className={`text-[11px] leading-snug block ${isSelected ? 'text-white/90' : 'text-[#8c9196]'}`}>
+                      <span
+                        className={`text-[11px] leading-snug block ${
+                          isSelected ? 'text-white/90' : 'text-[#8c9196]'
+                        }`}
+                      >
                         {item.sub}
                       </span>
                     </button>
@@ -216,7 +235,9 @@ export default function ProjectEstimator() {
                       <div className="flex items-center gap-3">
                         <span
                           className={`w-4 h-4 rounded-md border flex items-center justify-center transition-all ${
-                            isChecked ? 'bg-[#ff003d] border-[#ff003d] text-white' : 'border-white/30'
+                            isChecked
+                              ? 'bg-[#ff003d] border-[#ff003d] text-white'
+                              : 'border-white/30'
                           }`}
                         >
                           {isChecked && <span className="text-[10px] font-bold">✓</span>}
@@ -226,7 +247,7 @@ export default function ProjectEstimator() {
                         </span>
                       </div>
                       <span className="text-xs font-mono text-white/80 shrink-0 font-bold ml-2">
-                        +{formatCurrency(addon.cost)}
+                        +{formatINR(addon.cost)}
                       </span>
                     </button>
                   );
@@ -242,7 +263,7 @@ export default function ProjectEstimator() {
                 Estimated Production Window
               </span>
               <span className="text-[11px] font-mono text-white/60 bg-white/10 px-2.5 py-1 rounded-full">
-                Fixed-Scope Model
+                Fixed-Scope INR Model
               </span>
             </div>
 
@@ -250,13 +271,13 @@ export default function ProjectEstimator() {
             <div className="space-y-6 mb-8">
               <div>
                 <span className="text-xs font-semibold uppercase tracking-wider text-[#8c9196] block mb-1">
-                  Estimated Investment Range
+                  Estimated Investment Range (₹)
                 </span>
                 <div className="font-display text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">
-                  {formatCurrency(lowEstimate)} – {formatCurrency(highEstimate)}
+                  {formatINR(lowEstimate)} – {formatINR(highEstimate)}
                 </div>
-                <span className="text-[11px] text-[#8c9196] font-mono mt-1 block">
-                  Includes complete art direction, engineering, and staging testing
+                <span className="text-[11px] text-[#8c9196] font-mono mt-1.5 block">
+                  Market estimate based on standard agency benchmarks (Custom pricing finalized upon brief)
                 </span>
               </div>
 
@@ -293,7 +314,7 @@ export default function ProjectEstimator() {
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-[#25D366] font-bold">✓</span>
-                  <span>Direct Slack/WhatsApp channel with principal engineers</span>
+                  <span>Direct WhatsApp channel with principal engineers</span>
                 </li>
               </ul>
             </div>
@@ -305,7 +326,6 @@ export default function ProjectEstimator() {
                 href={waEstimateUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => playClickSound()}
                 className="w-full py-4 px-6 rounded-full bg-[#25D366] text-[#111215] font-display text-base font-extrabold flex items-center justify-center gap-2.5 transition-all duration-200 hover:bg-[#34eb77] hover:scale-[1.02] active:scale-[0.98] shadow-lg"
               >
                 <span>Discuss This Spec on WhatsApp</span>
@@ -315,7 +335,6 @@ export default function ProjectEstimator() {
               {/* Scroll to Enquiry Form */}
               <a
                 href="#cta"
-                onClick={() => playClickSound()}
                 className="w-full py-3.5 px-6 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all border border-white/15"
               >
                 <span>Proceed to Studio Brief Form</span>

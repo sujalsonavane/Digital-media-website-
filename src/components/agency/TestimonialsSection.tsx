@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
-import { playClickSound } from '@/utils/sound';
+import React, { useRef, useState } from 'react';
+import { gsap, prefersReducedMotion } from '@/utils/motion';
+import { useGSAP } from '@gsap/react';
 
 interface TestimonialItem {
   id: string;
@@ -10,6 +11,9 @@ interface TestimonialItem {
   title: string;
   company: string;
   metric: string;
+  metricTarget: number;
+  metricPrefix?: string;
+  metricSuffix: string;
   metricLabel: string;
   year: string;
   avatarText: string;
@@ -24,7 +28,10 @@ const TESTIMONIALS: TestimonialItem[] = [
     title: 'Head of Engineering',
     company: 'Aetheria Systems',
     metric: '+142%',
-    metricLabel: 'Enterprise Conversion',
+    metricTarget: 142,
+    metricPrefix: '+',
+    metricSuffix: '%',
+    metricLabel: 'Enterprise Conversion Lift',
     year: '2026',
     avatarText: 'MT',
   },
@@ -36,6 +43,9 @@ const TESTIMONIALS: TestimonialItem[] = [
     title: 'VP of Product',
     company: 'Orbital Health',
     metric: '4.9★',
+    metricTarget: 4.9,
+    metricPrefix: '',
+    metricSuffix: '★',
     metricLabel: 'App Store Rating',
     year: '2025',
     avatarText: 'ER',
@@ -48,7 +58,10 @@ const TESTIMONIALS: TestimonialItem[] = [
     title: 'Creative Director',
     company: 'Lumina Media Group',
     metric: '3.2M+',
-    metricLabel: 'Organic Impressions',
+    metricTarget: 3.2,
+    metricPrefix: '',
+    metricSuffix: 'M+',
+    metricLabel: 'Organic Reel Impressions',
     year: '2025',
     avatarText: 'JS',
   },
@@ -60,27 +73,94 @@ const TESTIMONIALS: TestimonialItem[] = [
     title: 'Co-Founder & COO',
     company: 'Vector Enterprise',
     metric: '-40%',
-    metricLabel: 'Ad Spend Wastage',
+    metricTarget: 40,
+    metricPrefix: '-',
+    metricSuffix: '%',
+    metricLabel: 'Ad Spend Reduction',
     year: '2024–2026',
     avatarText: 'DL',
   },
 ];
 
 export default function TestimonialsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
 
   const activeItem = TESTIMONIALS[activeIdx];
 
-  const handleSelect = (idx: number) => {
-    playClickSound();
-    setActiveIdx(idx);
-  };
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+
+      // 1. Entrance reveal on scroll
+      gsap.fromTo(
+        '.testimonial-hero-card',
+        { opacity: 0, y: 50, scale: 0.98 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 78%',
+          },
+        }
+      );
+
+      // 2. Animated Counter for the active metric
+      const counterEl = document.querySelector('.metric-animated-value');
+      if (counterEl) {
+        const target = activeItem.metricTarget;
+        const prefix = activeItem.metricPrefix || '';
+        const suffix = activeItem.metricSuffix || '';
+        const isDecimal = target % 1 !== 0;
+
+        const obj = { val: 0 };
+        gsap.to(obj, {
+          val: target,
+          duration: 1.2,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+          },
+          onUpdate: () => {
+            if (counterEl) {
+              const displayVal = isDecimal ? obj.val.toFixed(1) : Math.round(obj.val);
+              counterEl.textContent = `${prefix}${displayVal}${suffix}`;
+            }
+          },
+        });
+      }
+
+      // 3. Staggered tab strip entrance
+      gsap.fromTo(
+        '.testimonial-tab-btn',
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: 0.6,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.testimonial-tabs-row',
+            start: 'top 85%',
+          },
+        }
+      );
+    },
+    { scope: sectionRef, dependencies: [activeIdx] }
+  );
 
   return (
     <section
+      ref={sectionRef}
       id="testimonials"
       aria-label="Client Testimonials and Verified Outcomes"
-      className="testimonials-section relative z-20 bg-white text-[#161d25] rounded-[var(--r-panel)] px-[var(--inset)] py-14 sm:py-20 md:py-24 overflow-hidden shadow-sm"
+      className="testimonials-section relative z-20 bg-white text-[#161d25] rounded-[var(--r-panel)] px-[var(--inset)] py-16 sm:py-24 md:py-28 overflow-hidden shadow-sm"
     >
       <div className="max-w-6xl w-full mx-auto">
         {/* Header */}
@@ -89,26 +169,26 @@ export default function TestimonialsSection() {
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#ff003d] block mb-2">
               [ 05 // Verified Endorsements ]
             </span>
-            <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-[#161d25] leading-none">
-              CLIENT TESTIMONIALS
+            <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-[#161d25] leading-none">
+              CLIENT TESTIMONIALS.
             </h2>
           </div>
           <span className="text-xs sm:text-sm font-semibold text-[#8c9196] tracking-wider uppercase">
-            Quantifiable Outcomes & Executive Reviews
+            Quantifiable Outcomes & Verified Leadership Reviews
           </span>
         </div>
 
-        {/* Featured Quote Stage */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#f7f8fa] border border-[#e7e7ea] rounded-3xl p-6 sm:p-10 md:p-14 shadow-md">
+        {/* Featured Quote Stage with Scroll Animation */}
+        <div className="testimonial-hero-card grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#f7f8fa] border border-[#e7e7ea] rounded-3xl p-6 sm:p-10 md:p-14 shadow-md transition-all duration-300">
           {/* Main Quote Column (Left 8) */}
           <div className="lg:col-span-8 flex flex-col justify-between">
             {/* Quote Marks & Category */}
             <div className="flex items-center gap-3 mb-6">
-              <span className="font-serif text-5xl leading-none text-[#ff003d] select-none">
+              <span className="font-serif text-5xl sm:text-6xl leading-none text-[#ff003d] select-none">
                 “
               </span>
               <span className="text-xs font-mono font-bold uppercase text-[#8c9196] tracking-wider">
-                {activeItem.company} // Verified Client Partner
+                {activeItem.company} // Verified Production Partner
               </span>
             </div>
 
@@ -119,7 +199,7 @@ export default function TestimonialsSection() {
 
             {/* Author Byline */}
             <div className="flex items-center gap-4 pt-6 border-t border-[#161d25]/10">
-              <div className="w-12 h-12 rounded-full bg-[#161d25] text-white flex items-center justify-center font-bold text-sm tracking-wide shrink-0">
+              <div className="w-12 h-12 rounded-full bg-[#161d25] text-white flex items-center justify-center font-bold text-sm tracking-wide shrink-0 shadow-sm">
                 {activeItem.avatarText}
               </div>
               <div>
@@ -133,12 +213,12 @@ export default function TestimonialsSection() {
             </div>
           </div>
 
-          {/* Metric Highlight Card (Right 4) */}
-          <div className="lg:col-span-4 bg-[#161d25] text-white rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-center shadow-xl">
+          {/* Metric Highlight Card (Right 4) with Live Number Animation */}
+          <div className="lg:col-span-4 bg-[#161d25] text-white rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-center shadow-xl relative overflow-hidden">
             <span className="text-[11px] font-mono uppercase tracking-widest text-[#ffa3b8] mb-2 block">
               Quantifiable Impact
             </span>
-            <div className="font-display text-5xl sm:text-6xl font-black text-white tracking-tight my-2">
+            <div className="metric-animated-value font-display text-5xl sm:text-6xl font-black text-white tracking-tight my-2">
               {activeItem.metric}
             </div>
             <span className="text-xs font-bold text-white/90 uppercase tracking-wider block">
@@ -151,15 +231,15 @@ export default function TestimonialsSection() {
         </div>
 
         {/* Tab Selector Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+        <div className="testimonial-tabs-row grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
           {TESTIMONIALS.map((item, idx) => {
             const isSelected = activeIdx === idx;
             return (
               <button
                 key={item.id}
                 type="button"
-                onClick={() => handleSelect(idx)}
-                className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
+                onClick={() => setActiveIdx(idx)}
+                className={`testimonial-tab-btn p-4 rounded-2xl border text-left transition-all cursor-pointer ${
                   isSelected
                     ? 'bg-[#ff003d] text-white border-[#ff003d] shadow-md scale-[1.02]'
                     : 'bg-white text-[#161d25] border-[#e7e7ea] hover:bg-[#f7f8fa]'

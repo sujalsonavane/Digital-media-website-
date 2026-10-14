@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { agencyConfig } from '@/data/agencyData';
-import { playClickSound, playHoverSound } from '@/utils/sound';
 
 interface MenuCurtainProps {
   isOpen: boolean;
@@ -130,10 +129,7 @@ export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
               return (
                 <li
                   key={item.name}
-                  onMouseEnter={() => {
-                    setHoveredIdx(idx);
-                    playHoverSound();
-                  }}
+                  onMouseEnter={() => setHoveredIdx(idx)}
                   onMouseLeave={() => setHoveredIdx(null)}
                   style={{
                     transitionDelay: isOpen ? `${idx * 40 + 80}ms` : '0ms',
@@ -144,10 +140,7 @@ export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
                 >
                   <a
                     href={item.url}
-                    onClick={() => {
-                      playClickSound();
-                      onClose();
-                    }}
+                    onClick={onClose}
                     className="group flex items-center gap-3 sm:gap-6 cursor-pointer py-1"
                   >
                     {/* Rotated Index Number */}
