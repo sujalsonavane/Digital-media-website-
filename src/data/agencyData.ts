@@ -20,6 +20,8 @@ export const agencyConfig = {
   contact: {
     email: 'hello@luminousdigital.studio',
     inquiryEmail: 'inquiry@luminousdigital.studio',
+    whatsapp: '+91 98765 43210',
+    whatsappUrl: 'https://wa.me/919876543210?text=Hello%20Luminous%20Studio%2C%20I%20would%20like%20to%20discuss%20a%20project.',
     location: 'INDIA',
     timeWeather: 'IST (INDIA STANDARD TIME)',
     est: 'EST. 2026',

@@ -180,7 +180,18 @@ export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
           </span>
         </div>
 
-        <div className="flex items-center gap-6 text-white uppercase tracking-widest font-bold text-xs">
+        <div className="flex items-center gap-5 sm:gap-6 text-white uppercase tracking-widest font-bold text-xs">
+          {agencyConfig.contact.whatsapp && (
+            <a
+              href={agencyConfig.contact.whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:opacity-80 transition-opacity flex items-center gap-1.5"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-white" />
+              <span>WHATSAPP</span>
+            </a>
+          )}
           <a
             href="https://linkedin.com"
             target="_blank"

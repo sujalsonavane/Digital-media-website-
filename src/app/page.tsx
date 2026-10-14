@@ -5,6 +5,7 @@ import { ArchiveSection } from '@/components/agency/ArchiveSection';
 import { ServicesSection } from '@/components/agency/ServicesSection';
 import { EnquirySection } from '@/components/agency/EnquirySection';
 import { FooterSection } from '@/components/agency/FooterSection';
+import WhatsAppButton from '@/components/agency/WhatsAppButton';
 
 export default function Home() {
   return (
@@ -29,6 +30,9 @@ export default function Home() {
 
       {/* 7. Studio Footer */}
       <FooterSection />
+
+      {/* 8. Floating Direct WhatsApp Interaction */}
+      <WhatsAppButton />
     </div>
   );
 }

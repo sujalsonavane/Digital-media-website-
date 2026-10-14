@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { serviceCategories } from '@/data/agencyData';
+import { serviceCategories, agencyConfig } from '@/data/agencyData';
 import { ServiceCategory } from '@/types/agency';
 
 const BUDGET_OPTIONS = [
@@ -204,6 +204,22 @@ export const EnquirySection: React.FC = () => {
               </form>
             )}
 
+            {/* Direct WhatsApp Instant Consultation Prompt */}
+            {step === 1 && agencyConfig.contact.whatsapp && (
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 text-xs sm:text-sm font-semibold text-white/95">
+                <span>Prefer immediate conversation?</span>
+                <a
+                  href={agencyConfig.contact.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-[#111215] font-bold text-xs tracking-wide transition-all shadow-lg hover:bg-neutral-100 hover:scale-105 active:scale-95"
+                >
+                  <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
+                  <span>Chat on WhatsApp: {agencyConfig.contact.whatsapp} ↗</span>
+                </a>
+              </div>
+            )}
+
             {/* STEP 2: Qualification & Scope Details */}
             {step === 2 && (
               <form
@@ -372,9 +388,21 @@ export const EnquirySection: React.FC = () => {
 
             {/* 4 Cards (Matching Awake Reference frame 020: Contact us, Representative office, Development team, Working time) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left my-8">
-              <div className="bg-white text-[#161d25] rounded-[1.25rem] p-6 shadow-xl">
-                <span className="text-xs font-bold uppercase text-[#8c9196] block mb-2">Direct Studio Email</span>
-                <p className="font-bold text-sm text-[#161d25] break-words">hello@luminousdigital.studio</p>
+              <div className="bg-white text-[#161d25] rounded-[1.25rem] p-6 shadow-xl flex flex-col justify-between">
+                <div>
+                  <span className="text-xs font-bold uppercase text-[#8c9196] block mb-2">Direct Studio Contact</span>
+                  <p className="font-bold text-sm text-[#161d25] break-words mb-2">{agencyConfig.contact.email}</p>
+                </div>
+                {agencyConfig.contact.whatsapp && (
+                  <a
+                    href={agencyConfig.contact.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-[#25D366] hover:text-[#1eb855] font-bold transition-colors pt-2 border-t border-neutral-100"
+                  >
+                    <span>💬 WhatsApp: {agencyConfig.contact.whatsapp} ↗</span>
+                  </a>
+                )}
               </div>
 
               <div className="bg-white text-[#161d25] rounded-[1.25rem] p-6 shadow-xl">
