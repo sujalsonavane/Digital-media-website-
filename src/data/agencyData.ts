@@ -220,10 +220,12 @@ export const archiveData: ArchiveItem[] = [
 
 export const navLinks: SocialLink[] = [
   { name: 'Home', url: '#' },
-  { name: 'About', url: '#about' },
+  { name: 'Process', url: '#process' },
   { name: 'Projects', url: '#projects' },
-  { name: 'Services', url: '#services' },
+  { name: 'Reviews', url: '#testimonials' },
   { name: 'Live Clients', url: '#clients' },
+  { name: 'Services', url: '#services' },
+  { name: 'Estimator', url: '#estimator' },
   { name: 'Contact', url: '#cta' },
 ];
 

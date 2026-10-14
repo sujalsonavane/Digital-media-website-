@@ -1,0 +1,186 @@
+'use client';
+
+import React, { useState } from 'react';
+import { playClickSound } from '@/utils/sound';
+
+interface TestimonialItem {
+  id: string;
+  quote: string;
+  author: string;
+  title: string;
+  company: string;
+  metric: string;
+  metricLabel: string;
+  year: string;
+  avatarText: string;
+}
+
+const TESTIMONIALS: TestimonialItem[] = [
+  {
+    id: 't-1',
+    quote:
+      'Luminous re-engineered our platform architecture from the ground up. Global LCP dropped from 3.2s to 0.38s, directly driving an immediate 142% lift in enterprise conversion velocity.',
+    author: 'Marcus Thorne',
+    title: 'Head of Engineering',
+    company: 'Aetheria Systems',
+    metric: '+142%',
+    metricLabel: 'Enterprise Conversion',
+    year: '2026',
+    avatarText: 'MT',
+  },
+  {
+    id: 't-2',
+    quote:
+      'The cross-platform interface feels indistinguishable from pure native Swift. The tactile feedback, encrypted synchronization, and fluid 60fps telemetry established immediate trust among our healthcare partners.',
+    author: 'Elena Rostova',
+    title: 'VP of Product',
+    company: 'Orbital Health',
+    metric: '4.9★',
+    metricLabel: 'App Store Rating',
+    year: '2025',
+    avatarText: 'ER',
+  },
+  {
+    id: 't-3',
+    quote:
+      'Their motion design and audio mastering elevated our commercial campaign into an editorial cinematic piece that generated over 3 million organic impressions in its opening fortnight.',
+    author: 'Julian Sterling',
+    title: 'Creative Director',
+    company: 'Lumina Media Group',
+    metric: '3.2M+',
+    metricLabel: 'Organic Impressions',
+    year: '2025',
+    avatarText: 'JS',
+  },
+  {
+    id: 't-4',
+    quote:
+      'Luminous unified our disparate marketing data into a real-time executive cockpit. We eliminated 40% in wasted ad spend within 45 days of deployment.',
+    author: 'David Lin',
+    title: 'Co-Founder & COO',
+    company: 'Vector Enterprise',
+    metric: '-40%',
+    metricLabel: 'Ad Spend Wastage',
+    year: '2024–2026',
+    avatarText: 'DL',
+  },
+];
+
+export default function TestimonialsSection() {
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  const activeItem = TESTIMONIALS[activeIdx];
+
+  const handleSelect = (idx: number) => {
+    playClickSound();
+    setActiveIdx(idx);
+  };
+
+  return (
+    <section
+      id="testimonials"
+      aria-label="Client Testimonials and Verified Outcomes"
+      className="testimonials-section relative z-20 bg-white text-[#161d25] rounded-[var(--r-panel)] px-[var(--inset)] py-14 sm:py-20 md:py-24 overflow-hidden shadow-sm"
+    >
+      <div className="max-w-6xl w-full mx-auto">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 sm:mb-16 gap-3">
+          <div>
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#ff003d] block mb-2">
+              [ 05 // Verified Endorsements ]
+            </span>
+            <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-[#161d25] leading-none">
+              CLIENT TESTIMONIALS
+            </h2>
+          </div>
+          <span className="text-xs sm:text-sm font-semibold text-[#8c9196] tracking-wider uppercase">
+            Quantifiable Outcomes & Executive Reviews
+          </span>
+        </div>
+
+        {/* Featured Quote Stage */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#f7f8fa] border border-[#e7e7ea] rounded-3xl p-6 sm:p-10 md:p-14 shadow-md">
+          {/* Main Quote Column (Left 8) */}
+          <div className="lg:col-span-8 flex flex-col justify-between">
+            {/* Quote Marks & Category */}
+            <div className="flex items-center gap-3 mb-6">
+              <span className="font-serif text-5xl leading-none text-[#ff003d] select-none">
+                “
+              </span>
+              <span className="text-xs font-mono font-bold uppercase text-[#8c9196] tracking-wider">
+                {activeItem.company} // Verified Client Partner
+              </span>
+            </div>
+
+            {/* Quote Text */}
+            <blockquote className="font-display text-xl sm:text-2xl md:text-3xl font-extrabold text-[#161d25] leading-snug tracking-tight mb-8">
+              {activeItem.quote}
+            </blockquote>
+
+            {/* Author Byline */}
+            <div className="flex items-center gap-4 pt-6 border-t border-[#161d25]/10">
+              <div className="w-12 h-12 rounded-full bg-[#161d25] text-white flex items-center justify-center font-bold text-sm tracking-wide shrink-0">
+                {activeItem.avatarText}
+              </div>
+              <div>
+                <div className="font-bold text-base text-[#161d25] tracking-tight">
+                  {activeItem.author}
+                </div>
+                <div className="text-xs text-[#8c9196] font-medium">
+                  {activeItem.title}, <span className="font-semibold text-[#161d25]">{activeItem.company}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Metric Highlight Card (Right 4) */}
+          <div className="lg:col-span-4 bg-[#161d25] text-white rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-center shadow-xl">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#ffa3b8] mb-2 block">
+              Quantifiable Impact
+            </span>
+            <div className="font-display text-5xl sm:text-6xl font-black text-white tracking-tight my-2">
+              {activeItem.metric}
+            </div>
+            <span className="text-xs font-bold text-white/90 uppercase tracking-wider block">
+              {activeItem.metricLabel}
+            </span>
+            <span className="text-[10px] font-mono text-white/60 mt-3 pt-3 border-t border-white/10 w-full block">
+              Audited in {activeItem.year} Deployment
+            </span>
+          </div>
+        </div>
+
+        {/* Tab Selector Strip */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+          {TESTIMONIALS.map((item, idx) => {
+            const isSelected = activeIdx === idx;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleSelect(idx)}
+                className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#ff003d] text-white border-[#ff003d] shadow-md scale-[1.02]'
+                    : 'bg-white text-[#161d25] border-[#e7e7ea] hover:bg-[#f7f8fa]'
+                }`}
+              >
+                <div className="flex justify-between items-center mb-1">
+                  <span className="font-bold text-xs sm:text-sm tracking-tight truncate">
+                    {item.company}
+                  </span>
+                  <span className={`text-[10px] font-mono font-bold ${isSelected ? 'text-white' : 'text-[#ff003d]'}`}>
+                    {item.metric}
+                  </span>
+                </div>
+                <span className={`text-[11px] truncate block ${isSelected ? 'text-white/80' : 'text-[#8c9196]'}`}>
+                  {item.author}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

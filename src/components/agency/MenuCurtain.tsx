@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { agencyConfig } from '@/data/agencyData';
+import { playClickSound, playHoverSound } from '@/utils/sound';
 
 interface MenuCurtainProps {
   isOpen: boolean;
@@ -12,10 +13,12 @@ interface MenuCurtainProps {
 
 const menuItems = [
   { index: '00', name: 'HOME', url: '#' },
-  { index: '01', name: 'SERVICES', url: '#services' },
+  { index: '01', name: 'PROCESS', url: '#process' },
   { index: '02', name: 'PROJECTS', url: '#projects' },
-  { index: '03', name: 'LIVE CLIENTS', url: '#clients' },
-  { index: '04', name: 'CONTACTS', url: '#cta' },
+  { index: '03', name: 'REVIEWS', url: '#testimonials' },
+  { index: '04', name: 'SERVICES', url: '#services' },
+  { index: '05', name: 'ESTIMATOR', url: '#estimator' },
+  { index: '06', name: 'CONTACTS', url: '#cta' },
 ];
 
 export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
@@ -127,7 +130,10 @@ export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
               return (
                 <li
                   key={item.name}
-                  onMouseEnter={() => setHoveredIdx(idx)}
+                  onMouseEnter={() => {
+                    setHoveredIdx(idx);
+                    playHoverSound();
+                  }}
                   onMouseLeave={() => setHoveredIdx(null)}
                   style={{
                     transitionDelay: isOpen ? `${idx * 40 + 80}ms` : '0ms',
@@ -138,7 +144,10 @@ export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
                 >
                   <a
                     href={item.url}
-                    onClick={onClose}
+                    onClick={() => {
+                      playClickSound();
+                      onClose();
+                    }}
                     className="group flex items-center gap-3 sm:gap-6 cursor-pointer py-1"
                   >
                     {/* Rotated Index Number */}

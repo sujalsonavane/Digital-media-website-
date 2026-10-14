@@ -4,14 +4,18 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { agencyConfig } from '@/data/agencyData';
 import MenuCurtain from './MenuCurtain';
+import SoundToggle from './SoundToggle';
+import ShowreelModal from './ShowreelModal';
+import { playClickSound } from '@/utils/sound';
 
 export default function HeaderNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const [isShowreelOpen, setIsShowreelOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Trigger sticky nav when scrolling past 350px
+      // Trigger sticky nav when scrolling past 380px
       if (window.scrollY > 380) {
         setIsSticky(true);
       } else {
@@ -41,7 +45,23 @@ export default function HeaderNav() {
           <span>{agencyConfig.brandmark}</span>
         </a>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Sound Design Switch */}
+          <SoundToggle />
+
+          {/* Showreel Button */}
+          <button
+            type="button"
+            onClick={() => {
+              playClickSound();
+              setIsShowreelOpen(true);
+            }}
+            className="hidden md:inline-flex items-center justify-center gap-1.5 h-10 px-4 rounded-full text-xs font-mono font-bold text-white bg-white/15 hover:bg-white/25 backdrop-blur-md transition-all duration-200 cursor-pointer border border-white/20"
+          >
+            <span>reel [01:15]</span>
+            <span className="text-[10px]">▶</span>
+          </button>
+
           <a
             href="#cta"
             className="hidden sm:inline-flex items-center justify-center h-10 px-5 rounded-full text-sm font-medium text-white bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all duration-200"
@@ -51,7 +71,10 @@ export default function HeaderNav() {
 
           <button
             type="button"
-            onClick={() => setIsMenuOpen(true)}
+            onClick={() => {
+              playClickSound();
+              setIsMenuOpen(true);
+            }}
             aria-expanded={isMenuOpen}
             aria-controls="menuCurtain"
             aria-label="Open navigation menu"
@@ -76,7 +99,7 @@ export default function HeaderNav() {
         }`}
         aria-hidden={!isSticky || isMenuOpen}
       >
-        <div className="flex items-center gap-3 sm:gap-6 px-3.5 sm:px-6 py-2 rounded-full bg-[#161d25]/90 backdrop-blur-md border border-white/15 shadow-2xl text-white max-w-[calc(100vw-2rem)]">
+        <div className="flex items-center gap-3 sm:gap-5 px-3.5 sm:px-6 py-2 rounded-full bg-[#161d25]/90 backdrop-blur-md border border-white/15 shadow-2xl text-white max-w-[calc(100vw-2rem)]">
           <a
             href="#"
             className="font-extrabold text-sm sm:text-base md:text-lg tracking-tighter text-white hover:text-[#ff003d] transition-colors shrink-0 flex items-center gap-2 group"
@@ -91,14 +114,26 @@ export default function HeaderNav() {
             <span>{agencyConfig.brandmark}</span>
           </a>
 
-          <div className="hidden md:flex items-center gap-5 text-xs font-semibold text-white/80">
-            <a href="#about" className="hover:text-white transition-colors">About</a>
+          <div className="hidden lg:flex items-center gap-5 text-xs font-semibold text-white/80">
+            <a href="#process" className="hover:text-white transition-colors">Process</a>
             <a href="#projects" className="hover:text-white transition-colors">Projects</a>
-            <a href="#clients" className="hover:text-white transition-colors">Live Clients</a>
+            <a href="#testimonials" className="hover:text-white transition-colors">Reviews</a>
             <a href="#services" className="hover:text-white transition-colors">Services</a>
+            <a href="#estimator" className="hover:text-white transition-colors">Estimator</a>
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                playClickSound();
+                setIsShowreelOpen(true);
+              }}
+              className="hidden sm:inline-flex items-center justify-center px-3 py-1 rounded-full text-[11px] font-mono text-white/80 hover:text-white bg-white/10 hover:bg-white/20 transition-all cursor-pointer"
+            >
+              Reel ▶
+            </button>
+
             <a
               href="#cta"
               className="group inline-flex items-center justify-center gap-1.5 h-7 sm:h-8 px-3 sm:px-4 rounded-full text-[11px] sm:text-xs font-bold text-white bg-[#ff003d] hover:bg-[#d80034] transition-colors whitespace-nowrap shrink-0 flex-nowrap"
@@ -116,7 +151,10 @@ export default function HeaderNav() {
             </a>
             <button
               type="button"
-              onClick={() => setIsMenuOpen(true)}
+              onClick={() => {
+                playClickSound();
+                setIsMenuOpen(true);
+              }}
               aria-label="Open menu"
               className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-colors cursor-pointer shrink-0"
             >
@@ -128,6 +166,9 @@ export default function HeaderNav() {
 
       {/* 3. Fullscreen Curtain */}
       <MenuCurtain isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+
+      {/* 4. Cinematic Showreel Modal */}
+      <ShowreelModal isOpen={isShowreelOpen} onClose={() => setIsShowreelOpen(false)} />
     </>
   );
 }

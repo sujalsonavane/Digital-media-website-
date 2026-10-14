@@ -1,8 +1,11 @@
 import HeroSection from '@/components/agency/HeroSection';
 import { StatementSection } from '@/components/agency/StatementSection';
+import ProcessSection from '@/components/agency/ProcessSection';
 import { ProjectsSection } from '@/components/agency/ProjectsSection';
+import TestimonialsSection from '@/components/agency/TestimonialsSection';
 import { ArchiveSection } from '@/components/agency/ArchiveSection';
 import { ServicesSection } from '@/components/agency/ServicesSection';
+import ProjectEstimator from '@/components/agency/ProjectEstimator';
 import { EnquirySection } from '@/components/agency/EnquirySection';
 import { FooterSection } from '@/components/agency/FooterSection';
 import WhatsAppButton from '@/components/agency/WhatsAppButton';
@@ -10,28 +13,37 @@ import WhatsAppButton from '@/components/agency/WhatsAppButton';
 export default function Home() {
   return (
     <div className="page-frame min-h-screen">
-      {/* 1. Hero Panel & Navigation */}
+      {/* 1. Hero Panel & Navigation with Sound Design */}
       <HeroSection />
 
-      {/* 2. Positioning & Statement Panel */}
+      {/* 2. Positioning & Standard Statement Panel */}
       <StatementSection />
 
-      {/* 3. Featured Client Projects Showcase */}
+      {/* 3. "How We Work" 4-Stage Sprint Methodology */}
+      <ProcessSection />
+
+      {/* 4. Featured Client Projects & Case Studies Showcase */}
       <ProjectsSection />
 
-      {/* 4. Interactive Historical Archive */}
+      {/* 5. Client Testimonials & Quantifiable Outcomes */}
+      <TestimonialsSection />
+
+      {/* 6. Live Clients Archive Table with Cursor-Following Previews */}
       <ArchiveSection />
 
-      {/* 5. Services Stack (4 Approved Disciplines) */}
+      {/* 7. Services Stack (4 Approved Core Disciplines) */}
       <ServicesSection />
 
-      {/* 6. Client Enquiry & Interaction Band */}
+      {/* 8. Interactive Project Cost & Timeline Estimator */}
+      <ProjectEstimator />
+
+      {/* 9. Client Qualification & Enquiry Band */}
       <EnquirySection />
 
-      {/* 7. Studio Footer */}
+      {/* 10. Studio Footer & Working Time */}
       <FooterSection />
 
-      {/* 8. Floating Direct WhatsApp Interaction */}
+      {/* 11. Floating Direct WhatsApp Interaction */}
       <WhatsAppButton />
     </div>
   );
