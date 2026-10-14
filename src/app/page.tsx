@@ -34,11 +34,11 @@ export default function Home() {
       {/* 7. Services Stack (4 Approved Core Disciplines) */}
       <ServicesSection />
 
-      {/* 8. Interactive Project Cost & Timeline Estimator */}
-      <ProjectEstimator />
-
-      {/* 9. Client Qualification & Enquiry Band */}
+      {/* 8. Client Qualification & Direct Enquiry Band */}
       <EnquirySection />
+
+      {/* 9. Interactive Project Cost & Timeline Estimator (Moved After Inquiry) */}
+      <ProjectEstimator />
 
       {/* 10. Studio Footer & Working Time */}
       <FooterSection />
