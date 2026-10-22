@@ -1,4 +1,4 @@
-import { ServiceItem, ProjectItem, ArchiveItem, SocialLink, ServiceCategory } from '@/types/agency';
+import { ServiceItem, ProjectItem, ArchiveItem, SocialLink, ServiceCategory, TeamMember } from '@/types/agency';
 
 export const agencyConfig = {
   name: 'Luminous Digital Studio',
@@ -20,8 +20,12 @@ export const agencyConfig = {
   contact: {
     email: 'hello@luminousdigital.studio',
     inquiryEmail: 'inquiry@luminousdigital.studio',
+    isEmailConfigured: false, // Flag: pending verified studio domain MX setup
     whatsapp: '+91 98765 43210',
     whatsappUrl: 'https://wa.me/919876543210?text=Hello%20Luminous%20Studio%2C%20I%20would%20like%20to%20discuss%20a%20project.',
+    isWhatsAppConfigured: true,
+    configurationNotice:
+      'Contact channels currently contain demonstration placeholders. Live transactional mailbox and WhatsApp direct line require studio owner credentials.',
     location: 'INDIA',
     timeWeather: 'IST (INDIA STANDARD TIME)',
     est: 'EST. 2026',
@@ -220,18 +224,128 @@ export const archiveData: ArchiveItem[] = [
 
 export const navLinks: SocialLink[] = [
   { name: 'Home', url: '#' },
-  { name: 'Process', url: '#process' },
+  { name: 'Team', url: '#team' },
   { name: 'Projects', url: '#projects' },
   { name: 'Reviews', url: '#testimonials' },
-  { name: 'Live Clients', url: '#clients' },
+  { name: 'Client Index', url: '#clients' },
   { name: 'Services', url: '#services' },
-  { name: 'Estimator', url: '#estimator' },
   { name: 'Contact', url: '#cta' },
 ];
 
-export const socialLinks: SocialLink[] = [
-  { name: 'LinkedIn ↗', url: 'https://linkedin.com', external: true },
-  { name: 'GitHub ↗', url: 'https://github.com', external: true },
-  { name: 'X (Twitter) ↗', url: 'https://x.com', external: true },
-  { name: 'Awwwards ↗', url: 'https://awwwards.com', external: true },
+export const teamMembers: TeamMember[] = [
+  {
+    id: 'team-1',
+    number: '01',
+    name: 'Tarun Sethi',
+    role: 'Director, HS Digital Media & Strategic Marketing',
+    tier: 'mentor',
+    badgeLabel: 'Mentor & Guide',
+    subtitleRole: 'STRATEGIC LEADERSHIP & MARKETING MENTOR',
+    companyPill: 'Director • HS Digital Media',
+    affiliation: 'Director @ HS Digital Media',
+    category: 'leadership',
+    experienceBadge: '20+ Years Marketing & Media',
+    discipline: 'Strategic Leadership & Performance Media Planning',
+    bio: 'Brings strategic direction, brand expertise and real-world business insights. Helps us stay focused on growth, partnerships and long-term impact in the digital media space.',
+    fullBio: 'Having established over two decades of expertise in the marketing and media industry, I have built a career around driving business growth and brand success through strategic leadership and data-driven marketing solutions. As Director at HS Digital Media, I lead integrated campaigns focused on digital marketing, brand communication, and performance media planning.\n\nMy expertise lies in designing and executing ROI-focused strategies that deliver measurable impact across industries such as retail, real estate, FMCG, and hospitality. I specialize in aligning business objectives with innovative marketing solutions that enhance brand positioning and ROI.\n\nI am committed to fostering innovation, ensuring operational efficiency, and delivering long-term value for clients and stakeholders management.',
+    capabilities: ['Strategy', 'Branding', 'Marketing', 'Business Growth'],
+    initials: 'TS',
+    status: 'In Studio // Director',
+    socials: [
+      { name: 'HS Digital Media', url: '#' },
+      { name: 'LinkedIn', url: '#' },
+    ],
+  },
+  {
+    id: 'team-2',
+    number: '02',
+    name: 'Munna Khan',
+    role: 'Owner, The Chef Cafe & Operations Mentor',
+    tier: 'mentor',
+    badgeLabel: 'Mentor & Guide',
+    subtitleRole: 'HOSPITALITY & OPERATIONS MENTOR',
+    companyPill: 'The Chef Cafe',
+    affiliation: 'Owner @ The Chef Cafe',
+    category: 'operations',
+    experienceBadge: 'Hospitality & Business Leadership',
+    discipline: 'Hospitality Management & Team Mentorship',
+    bio: 'Brings hands-on experience in hospitality, operations and customer experience. Guides us in building efficient systems and delivering consistent, high-quality service.',
+    capabilities: ['Operations', 'Hospitality', 'Customer Experience', 'Systems'],
+    initials: 'MK',
+    status: 'In Studio // Mentor',
+    socials: [
+      { name: 'The Chef Cafe', url: '#' },
+      { name: 'LinkedIn', url: '#' },
+    ],
+  },
+  {
+    id: 'team-3',
+    number: '03',
+    name: 'Daksh Popat',
+    role: 'Data Analyst & Performance Marketing Manager',
+    tier: 'core',
+    badgeLabel: 'Core Team',
+    subtitleRole: 'PERFORMANCE MARKETING & DATA ANALYTICS',
+    affiliation: 'Meta & Google Ads Specialist',
+    category: 'marketing',
+    experienceBadge: 'Meta & Google Ads Specialist',
+    discipline: 'Data Analytics & Paid Campaign Acquisition',
+    bio: 'Focuses on data-driven growth, campaign performance and analytics. Turns insights into measurable results and helps optimise our digital strategies.',
+    capabilities: ['Analytics', 'Paid Media', 'Reporting', 'Growth'],
+    initials: 'DP',
+    status: 'In Studio // Growth & Ads',
+    socials: [
+      { name: 'Meta & Google Ads', url: '#' },
+      { name: 'LinkedIn', url: '#' },
+    ],
+  },
+  {
+    id: 'team-4',
+    number: '04',
+    name: 'Sujal Sonavane',
+    role: 'Lead Full-Stack Web & App Developer',
+    tier: 'core',
+    badgeLabel: 'Core Team',
+    subtitleRole: 'WEB DEVELOPER • FULL-STACK DEVELOPMENT',
+    affiliation: 'Engineering & Architecture Lead',
+    category: 'development',
+    experienceBadge: 'Full-Stack Web & Mobile Expert',
+    discipline: 'Web & Mobile Application Engineering',
+    bio: 'Builds fast, scalable and modern web experiences. Handles front-end and back-end development, APIs and integrations to turn ideas into functional products.',
+    capabilities: ['React', 'Next.js', 'Node.js', 'TypeScript'],
+    initials: 'SS',
+    status: 'In Studio // Engineering Lead',
+    socials: [
+      { name: 'GitHub', url: '#' },
+      { name: 'LinkedIn', url: '#' },
+    ],
+  },
+  {
+    id: 'team-5',
+    number: '05',
+    name: 'Asad Antule',
+    role: 'Senior Video Editor & Cinematographer',
+    tier: 'core',
+    badgeLabel: 'Core Team',
+    subtitleRole: 'VIDEO EDITOR • CINEMATIC CONTENT',
+    affiliation: 'Cinematography & Post-Production Lead',
+    category: 'video',
+    experienceBadge: 'Cinematographer & Post Editor',
+    discipline: 'Camera Direction, Reels & Cinematic Video',
+    bio: 'Creates engaging video content and visual stories. Brings brands to life through cinematic editing, motion graphics and creative direction.',
+    capabilities: ['Video Editing', 'Motion Graphics', 'Color Grading', 'Storytelling'],
+    initials: 'AA',
+    status: 'In Studio // Video Production',
+    socials: [
+      { name: 'Reels Portfolio', url: '#' },
+      { name: 'Instagram', url: '#' },
+    ],
+  },
 ];
+
+export const socialLinks: SocialLink[] = [
+  { name: 'LinkedIn', url: '#', external: true, isConfigured: false, statusNote: 'Official company profile pending setup' },
+  { name: 'GitHub', url: '#', external: true, isConfigured: false, statusNote: 'Public studio organization pending setup' },
+  { name: 'X (Twitter)', url: '#', external: true, isConfigured: false, statusNote: 'Official handle pending setup' },
+];
+

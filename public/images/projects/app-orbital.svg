@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 880" width="760" height="880">
+  <defs>
+    <filter id="shadow-app" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="28" stdDeviation="24" flood-color="#000000" flood-opacity="0.28" />
+    </filter>
+    <linearGradient id="wave-grad" x1="0" y1="0" x2="0" y2="1">
+      <feStop offset="0%" stop-color="#ff003d" stop-opacity="0.35" />
+      <feStop offset="100%" stop-color="#ff003d" stop-opacity="0.0" />
+    </linearGradient>
+  </defs>
+
+  <!-- Container Base -->
+  <rect width="760" height="880" fill="#e7e7ea" rx="36" />
+
+  <!-- Centered Smartphone Device Chassis -->
+  <g transform="translate(150, 65)" filter="url(#shadow-app)">
+    <!-- Outer Chassis Body -->
+    <rect width="460" height="750" rx="54" fill="#161d25" stroke="#2d3742" stroke-width="8" />
+
+    <!-- Speaker Bar / Dynamic Island -->
+    <rect x="155" y="24" width="150" height="32" rx="16" fill="#000000" />
+    <circle cx="270" cy="40" r="5" fill="#1a1a24" />
+
+    <!-- Screen UI Container -->
+    <g transform="translate(36, 85)">
+      <!-- Top Title Header -->
+      <text x="0" y="20" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" font-weight="700" letter-spacing="0.12em" fill="#8c9196">BIOMETRIC TELEMETRY</text>
+      
+      <!-- Big Metric -->
+      <text x="0" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="46" font-weight="900" letter-spacing="-0.03em" fill="#ffffff">$84,290.00</text>
+      <text x="0" y="105" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="800" fill="#27c93f" letter-spacing="0.04em">▲ +18.4% THIS MONTH</text>
+
+      <!-- Sparkline Card Component -->
+      <g transform="translate(0, 135)">
+        <rect width="388" height="200" rx="20" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+        <text x="24" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#8c9196" letter-spacing="0.08em">ACTIVE SPRINT VELOCITY</text>
+        <text x="310" y="36" font-family="ui-monospace, monospace" font-size="12" font-weight="700" fill="#ff003d">60 FPS</text>
+
+        <!-- Area Wave & Path -->
+        <path d="M 24 160 Q 90 70, 170 120 T 364 60 L 364 175 L 24 175 Z" fill="url(#wave-grad)" />
+        <path d="M 24 160 Q 90 70, 170 120 T 364 60" fill="none" stroke="#ff003d" stroke-width="3.5" stroke-linecap="round" />
+
+        <circle cx="364" cy="60" r="6" fill="#ff003d" />
+        <circle cx="364" cy="60" r="12" fill="#ff003d" fill-opacity="0.3" />
+      </g>
+
+      <!-- Two Mini Metric Tiles -->
+      <g transform="translate(0, 360)">
+        <rect width="186" height="110" rx="16" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" />
+        <text x="20" y="34" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#8c9196">HEART TELEMETRY</text>
+        <text x="20" y="75" font-family="system-ui, sans-serif" font-size="28" font-weight="900" fill="#ffffff">72 <tspan font-size="14" font-weight="600" fill="#8c9196">BPM</tspan></text>
+        <circle cx="150" cy="30" r="4" fill="#25D366" />
+
+        <g transform="translate(202, 0)">
+          <rect width="186" height="110" rx="16" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" />
+          <text x="20" y="34" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#8c9196">SYNC LATENCY</text>
+          <text x="20" y="75" font-family="system-ui, sans-serif" font-size="28" font-weight="900" fill="#ffffff">0.12 <tspan font-size="14" font-weight="600" fill="#8c9196">MS</tspan></text>
+          <circle cx="150" cy="30" r="4" fill="#ff003d" />
+        </g>
+      </g>
+
+      <!-- Floating App Dock Bar -->
+      <g transform="translate(34, 500)">
+        <rect width="320" height="60" rx="30" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" />
+        <circle cx="55" cy="30" r="10" fill="#ff003d" />
+        <circle cx="125" cy="30" r="8" fill="#ffffff" fill-opacity="0.8" />
+        <circle cx="195" cy="30" r="8" fill="#ffffff" fill-opacity="0.8" />
+        <circle cx="265" cy="30" r="8" fill="#ffffff" fill-opacity="0.8" />
+      </g>
+    </g>
+  </g>
+</svg>

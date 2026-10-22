@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 880" width="760" height="880">
+  <defs>
+    <filter id="shadow-analytics" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="24" stdDeviation="22" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Container Base -->
+  <rect width="760" height="880" fill="#e7e7ea" rx="36" />
+
+  <!-- Centered Telemetry Terminal Body -->
+  <g transform="translate(55, 80)" filter="url(#shadow-analytics)">
+    <rect width="650" height="720" rx="24" fill="#161d25" stroke="rgba(255,255,255,0.12)" stroke-width="2" />
+
+    <!-- Terminal Inner Padding -->
+    <g transform="translate(45, 45)">
+      <!-- Top Title Header -->
+      <div xmlns="http://www.w3.org/1999/xhtml"></div>
+      <text x="0" y="16" font-family="ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.14em" fill="#ff003d">[ SYNTHESIS TELEMETRY PIPELINE ]</text>
+      <text x="0" y="58" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="900" letter-spacing="-0.02em" fill="#ffffff">REAL-TIME CONVERSION ENGINE</text>
+
+      <!-- KPI Metrics Row -->
+      <g transform="translate(0, 90)">
+        <!-- Tile 1 -->
+        <rect width="265" height="110" rx="16" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" />
+        <text x="24" y="34" font-family="system-ui, sans-serif" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#8c9196">CONVERSION RATE</text>
+        <text x="24" y="78" font-family="system-ui, sans-serif" font-size="30" font-weight="900" fill="#ffffff">4.82% <tspan font-size="14" font-weight="800" fill="#27c93f">▲ +32%</tspan></text>
+
+        <!-- Tile 2 -->
+        <g transform="translate(295, 0)">
+          <rect width="265" height="110" rx="16" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" />
+          <text x="24" y="34" font-family="system-ui, sans-serif" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#8c9196">ACTIVE INGESTION</text>
+          <text x="24" y="78" font-family="system-ui, sans-serif" font-size="30" font-weight="900" fill="#ffffff">128.4K <tspan font-size="14" font-weight="800" fill="#25D366">EVT/S</tspan></text>
+        </g>
+      </g>
+
+      <!-- 5-Group Comparative Bar Chart Stage -->
+      <g transform="translate(0, 230)">
+        <rect width="560" height="270" rx="18" fill="rgba(0,0,0,0.35)" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" />
+        
+        <!-- Y Grid Lines -->
+        <line x1="30" y1="60" x2="530" y2="60" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4 4" />
+        <line x1="30" y1="120" x2="530" y2="120" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4 4" />
+        <line x1="30" y1="180" x2="530" y2="180" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4 4" />
+        <line x1="30" y1="230" x2="530" y2="230" stroke="rgba(255,255,255,0.14)" stroke-width="1.5" />
+
+        <!-- Bar Group 1 -->
+        <g transform="translate(60, 230)">
+          <rect x="0" y="-80" width="22" height="80" rx="4" fill="#ff003d" />
+          <rect x="26" y="-55" width="22" height="55" rx="4" fill="rgba(255,255,255,0.25)" />
+        </g>
+        <!-- Bar Group 2 -->
+        <g transform="translate(160, 230)">
+          <rect x="0" y="-130" width="22" height="130" rx="4" fill="#ff003d" />
+          <rect x="26" y="-90" width="22" height="90" rx="4" fill="rgba(255,255,255,0.25)" />
+        </g>
+        <!-- Bar Group 3 -->
+        <g transform="translate(260, 230)">
+          <rect x="0" y="-170" width="22" height="170" rx="4" fill="#ff003d" />
+          <rect x="26" y="-120" width="22" height="120" rx="4" fill="rgba(255,255,255,0.25)" />
+        </g>
+        <!-- Bar Group 4 -->
+        <g transform="translate(360, 230)">
+          <rect x="0" y="-200" width="22" height="200" rx="4" fill="#ff003d" />
+          <rect x="26" y="-150" width="22" height="150" rx="4" fill="rgba(255,255,255,0.25)" />
+        </g>
+        <!-- Bar Group 5 -->
+        <g transform="translate(460, 230)">
+          <rect x="0" y="-180" width="22" height="180" rx="4" fill="#ff003d" />
+          <rect x="26" y="-110" width="22" height="110" rx="4" fill="rgba(255,255,255,0.25)" />
+        </g>
+      </g>
+
+      <!-- Bottom Console Status Footer -->
+      <g transform="translate(0, 530)">
+        <text x="0" y="24" font-family="ui-monospace, monospace" font-size="12" font-weight="700" letter-spacing="0.08em" fill="#8c9196">SUB-SECOND TELEMETRY SYNC</text>
+        <circle cx="530" cy="18" r="5" fill="#27c93f" />
+        <text x="440" y="23" font-family="ui-monospace, monospace" font-size="12" font-weight="800" fill="#27c93f">ACTIVE</text>
+      </g>
+    </g>
+  </g>
+</svg>

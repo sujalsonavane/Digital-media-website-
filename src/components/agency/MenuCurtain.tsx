@@ -12,12 +12,11 @@ interface MenuCurtainProps {
 
 const menuItems = [
   { index: '00', name: 'HOME', url: '#' },
-  { index: '01', name: 'PROCESS', url: '#process' },
+  { index: '01', name: 'TEAM', url: '#team' },
   { index: '02', name: 'PROJECTS', url: '#projects' },
   { index: '03', name: 'REVIEWS', url: '#testimonials' },
   { index: '04', name: 'SERVICES', url: '#services' },
-  { index: '05', name: 'ESTIMATOR', url: '#estimator' },
-  { index: '06', name: 'CONTACTS', url: '#cta' },
+  { index: '05', name: 'CONTACTS', url: '#cta' },
 ];
 
 export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
@@ -108,14 +107,13 @@ export default function MenuCurtain({ isOpen, onClose }: MenuCurtainProps) {
         {/* Main Section: Brand Banner Card on Left (Desktop), Nav Links on Right */}
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 w-full my-auto">
           <div className="hidden lg:flex flex-col gap-4 max-w-sm">
-            <div className="relative w-full aspect-[3.1/1] rounded-2xl overflow-hidden border border-white/20 shadow-xl bg-[#161d25]">
-              <Image
-                src="/images/luminous-brand-banner.png"
-                alt="Luminous Digital Studio"
-                fill
-                sizes="384px"
-                className="object-cover"
-              />
+            <div className="p-6 rounded-2xl border border-white/20 shadow-xl bg-black/20 backdrop-blur-sm">
+              <div className="font-display font-extrabold text-2xl tracking-tight text-white mb-1">
+                luminous<span className="text-[#ff003d]">.</span>
+              </div>
+              <div className="text-[11px] font-mono font-bold uppercase tracking-widest text-white/70">
+                Digital Studio
+              </div>
             </div>
             <p className="text-white/80 text-xs font-medium leading-relaxed">
               Full-service digital media production studio partnering with ambitious brands across Web, App, Video, and Analytics.

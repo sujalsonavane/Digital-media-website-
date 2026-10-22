@@ -9,6 +9,14 @@ import AnalyticsMockupArt from './art/AnalyticsMockupArt';
 import { ArtDirectionType, ProjectItem } from '@/types/agency';
 import { gsap, prefersReducedMotion } from '@/utils/motion';
 import { useGSAP } from '@gsap/react';
+import GooeyDistortionView from './GooeyDistortionView';
+
+const PROJECT_IMAGES: Record<ArtDirectionType, string> = {
+  web: '/images/projects/web-aetheria.svg',
+  app: '/images/projects/app-orbital.svg',
+  video: '/images/projects/video-lumina.svg',
+  analytics: '/images/projects/analytics-synthesis.svg',
+};
 
 const renderArtComponent = (type: ArtDirectionType) => {
   switch (type) {
@@ -130,7 +138,7 @@ export const ProjectsSection: React.FC = () => {
       {/* Section Header */}
       <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end mb-12 sm:mb-16 gap-3">
         <div>
-          <h2 className="section-title font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold uppercase tracking-tight text-[#161d25] leading-[0.95]">
+          <h2 className="section-title font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold uppercase tracking-tight [word-spacing:0.25em] text-[#161d25] leading-[0.95]">
             OUR PROJECTS
           </h2>
           <p className="text-xs sm:text-sm font-semibold text-[#666f77] tracking-wider uppercase mt-2">
@@ -164,7 +172,14 @@ export const ProjectsSection: React.FC = () => {
               )}
 
               <div className="w-full h-full flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-[1.03]">
-                {renderArtComponent(project.artType)}
+                <GooeyDistortionView
+                  imageSrc={PROJECT_IMAGES[project.artType]}
+                  alt={`${project.title} - ${project.category} preview`}
+                  fallbackComponent={renderArtComponent(project.artType)}
+                  intensity={0.85}
+                  chromatic={1.2}
+                  radius={0.44}
+                />
               </div>
             </div>
 
@@ -211,7 +226,7 @@ export const ProjectsSection: React.FC = () => {
                   </span>
                   {activeProject.year && (
                     <span className="text-xs text-[#8c9196] font-mono">
-                      // {activeProject.year}
+                      {'// '}{activeProject.year}
                     </span>
                   )}
                 </div>
@@ -220,7 +235,7 @@ export const ProjectsSection: React.FC = () => {
                 </h2>
                 {activeProject.client && (
                   <p className="text-xs sm:text-sm text-[#8c9196] mt-1 font-semibold uppercase tracking-wider">
-                    Client Partner: {activeProject.client}
+                    Concept Partner: {activeProject.client}
                   </p>
                 )}
               </div>
@@ -241,7 +256,7 @@ export const ProjectsSection: React.FC = () => {
               {/* Executive Overview */}
               <div>
                 <h3 className="text-xs font-bold uppercase tracking-widest text-[#ff003d] mb-2">
-                  [ 01 // Executive Overview ]
+                  [ 01 // Concept Architecture Overview ]
                 </h3>
                 <p className="text-sm sm:text-base text-white/90 leading-relaxed font-normal">
                   {activeProject.overview}
@@ -273,7 +288,7 @@ export const ProjectsSection: React.FC = () => {
               {activeProject.results && activeProject.results.length > 0 && (
                 <div>
                   <h3 className="text-xs font-bold uppercase tracking-widest text-[#ff003d] mb-3">
-                    [ 02 // Measured Outcomes & Benchmarks ]
+                    [ 02 // Target Benchmarks & Concept Metrics ]
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {activeProject.results.map((res, i) => (
@@ -313,7 +328,7 @@ export const ProjectsSection: React.FC = () => {
             {/* Modal Footer CTA */}
             <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
               <span className="text-xs text-[#8c9196] font-mono">
-                LUMINOUS CASE STUDY ARCHIVE
+                LUMINOUS CONCEPT PROTOTYPE ARCHIVE
               </span>
               <a
                 href="#cta"

@@ -55,13 +55,14 @@ export default function HeaderNav() {
             aria-expanded={isMenuOpen}
             aria-controls="menuCurtain"
             aria-label="Open navigation menu"
-            className="group inline-flex items-center justify-center gap-2 h-10 px-5 rounded-full text-sm font-bold text-[#ff003d] bg-white hover:bg-neutral-100 hover:-translate-y-0.5 shadow-sm transition-all duration-200 cursor-pointer"
+            className="group inline-flex items-center justify-center gap-2.5 h-10 px-5 rounded-full text-sm font-bold text-[#ff003d] bg-white hover:bg-neutral-100 hover:-translate-y-0.5 shadow-sm transition-all duration-200 cursor-pointer overflow-hidden"
           >
             <span>menu.</span>
-            {/* Two clean horizontal bars matching Awake reference "=" */}
-            <span className="flex flex-col gap-1 w-3.5 py-0.5 overflow-hidden" aria-hidden="true">
-              <span className="block w-3.5 h-[2px] bg-[#ff003d] rounded-full transition-transform duration-300 ease-out group-hover:translate-x-0.5" />
-              <span className="block w-2.5 h-[2px] bg-[#ff003d] rounded-full transition-transform duration-300 ease-out group-hover:translate-x-1" />
+            {/* Awake Reference 3-Bar Staggered Sweep */}
+            <span className="flex flex-col gap-[3.5px] w-4.5 py-0.5 overflow-hidden" aria-hidden="true">
+              <span className="block w-[11px] h-[2px] bg-[#ff003d] rounded-full burger-sweep-1 origin-left transition-transform duration-300" />
+              <span className="block w-[18px] h-[2px] bg-[#ff003d] rounded-full burger-sweep-2 origin-left transition-transform duration-300" />
+              <span className="block w-[11px] h-[2px] bg-[#ff003d] rounded-full burger-sweep-3 origin-left transition-transform duration-300" />
             </span>
           </button>
         </div>
@@ -92,11 +93,10 @@ export default function HeaderNav() {
           </a>
 
           <div className="hidden lg:flex items-center gap-5 text-xs font-semibold text-white/80">
-            <a href="#process" className="hover:text-white transition-colors">Process</a>
+            <a href="#team" className="hover:text-white transition-colors">Team</a>
             <a href="#projects" className="hover:text-white transition-colors">Projects</a>
             <a href="#testimonials" className="hover:text-white transition-colors">Reviews</a>
             <a href="#services" className="hover:text-white transition-colors">Services</a>
-            <a href="#estimator" className="hover:text-white transition-colors">Estimator</a>
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
@@ -118,10 +118,16 @@ export default function HeaderNav() {
             <button
               type="button"
               onClick={() => setIsMenuOpen(true)}
-              aria-label="Open menu"
-              className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-colors cursor-pointer shrink-0"
+              aria-expanded={isMenuOpen}
+              aria-controls="menuCurtain"
+              aria-label="Open navigation menu"
+              className="group inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer shrink-0 overflow-hidden"
             >
-              =
+              <span className="flex flex-col gap-[2.5px] w-3.5 py-0.5 overflow-hidden" aria-hidden="true">
+                <span className="block w-[9px] h-[1.75px] bg-white rounded-full burger-sweep-1 origin-left transition-transform duration-300" />
+                <span className="block w-[15px] h-[1.75px] bg-white rounded-full burger-sweep-2 origin-left transition-transform duration-300" />
+                <span className="block w-[9px] h-[1.75px] bg-white rounded-full burger-sweep-3 origin-left transition-transform duration-300" />
+              </span>
             </button>
           </div>
         </div>

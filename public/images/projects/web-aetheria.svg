@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 880" width="760" height="880">
+  <defs>
+    <filter id="shadow-web" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="24" stdDeviation="20" flood-color="#161d25" flood-opacity="0.12" />
+    </filter>
+    <linearGradient id="web-stage-grad" x1="0" y1="0" x2="0" y2="1">
+      <feStop offset="0%" stop-color="#ffffff" />
+      <feStop offset="100%" stop-color="#f5f6f8" />
+    </linearGradient>
+  </defs>
+
+  <!-- Container Base -->
+  <rect width="760" height="880" fill="#e7e7ea" rx="36" />
+
+  <!-- Centered Browser Mockup Window -->
+  <g transform="translate(55, 80)" filter="url(#shadow-web)">
+    <!-- Browser Frame Window -->
+    <rect width="650" height="720" rx="24" fill="#ffffff" stroke="rgba(22,29,37,0.08)" stroke-width="2" />
+
+    <!-- Browser Header Bar -->
+    <path d="M 0 24 Q 0 0 24 0 L 626 0 Q 650 0 650 24 L 650 64 L 0 64 Z" fill="#f1f1f3" />
+    <line x1="0" y1="64" x2="650" y2="64" stroke="#e2e2e5" stroke-width="1.5" />
+
+    <!-- Traffic Lights -->
+    <circle cx="36" cy="32" r="7" fill="#ff5f56" />
+    <circle cx="58" cy="32" r="7" fill="#ffbd2e" />
+    <circle cx="80" cy="32" r="7" fill="#27c93f" />
+
+    <!-- URL Bar -->
+    <rect x="110" y="16" width="360" height="32" rx="8" fill="#ffffff" stroke="#e2e2e5" stroke-width="1" />
+    <text x="130" y="37" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" font-weight="600" fill="#8c9196">https://aetheria.studio</text>
+
+    <!-- Stage Content -->
+    <g transform="translate(0, 64)">
+      <rect width="650" height="656" rx="0" fill="#fafafb" />
+
+      <!-- Main Headline -->
+      <text x="50" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="44" font-weight="900" letter-spacing="-0.03em" fill="#161d25">AETHERIA ARCHITECTURE</text>
+      <text x="50" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" letter-spacing="0.05em" fill="#8c9196">FLAGSHIP DIGITAL PRODUCTION &amp; HEADLESS COMMERCE</text>
+
+      <!-- Two Feature Grid Cards -->
+      <g transform="translate(50, 170)">
+        <!-- Card 1: Editorial Platform -->
+        <rect width="260" height="190" rx="16" fill="#ffffff" stroke="#e7e7ea" stroke-width="1.5" />
+        <rect x="24" y="24" width="40" height="40" rx="10" fill="#ff003d" fill-opacity="0.1" />
+        <text x="36" y="50" font-family="sans-serif" font-size="20" font-weight="bold" fill="#ff003d">⚡</text>
+        <text x="24" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="800" fill="#ff003d" letter-spacing="0.02em">EDITORIAL PLATFORM</text>
+        <text x="24" y="140" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#8c9196">Headless Next.js Experience</text>
+        <text x="24" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#161d25">0.38s Edge Hydration</text>
+
+        <!-- Card 2: Conversion Ready -->
+        <g transform="translate(290, 0)">
+          <rect width="260" height="190" rx="16" fill="#161d25" />
+          <rect x="24" y="24" width="40" height="40" rx="10" fill="#ffffff" fill-opacity="0.1" />
+          <text x="36" y="50" font-family="sans-serif" font-size="20" font-weight="bold" fill="#ffffff">↗</text>
+          <text x="24" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="800" fill="#ffffff" letter-spacing="0.02em">CONVERSION READY</text>
+          <text x="24" y="140" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#ffd6df">Global CDN Architecture</text>
+          <text x="24" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#25D366">+142% Velocity Lift</text>
+        </g>
+      </g>
+
+      <!-- Bottom Visual Wireframe Matrix -->
+      <g transform="translate(50, 400)">
+        <rect width="550" height="190" rx="16" fill="#ffffff" stroke="#e7e7ea" stroke-width="1.5" />
+        <circle cx="45" cy="45" r="16" fill="#ff003d" />
+        <rect x="75" y="35" width="220" height="12" rx="6" fill="#161d25" />
+        <rect x="75" y="55" width="140" height="8" rx="4" fill="#8c9196" fill-opacity="0.6" />
+
+        <line x1="25" y1="85" x2="525" y2="85" stroke="#f1f1f3" stroke-width="1.5" />
+
+        <!-- 3 Columns Preview -->
+        <rect x="25" y="105" width="150" height="60" rx="8" fill="#f5f6f8" />
+        <rect x="200" y="105" width="150" height="60" rx="8" fill="#f5f6f8" />
+        <rect x="375" y="105" width="150" height="60" rx="8" fill="#ff003d" fill-opacity="0.06" stroke="#ff003d" stroke-width="1" stroke-dasharray="3 3" />
+        <text x="400" y="140" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#ff003d">ACTIVE SHOCK</text>
+      </g>
+    </g>
+  </g>
+</svg>

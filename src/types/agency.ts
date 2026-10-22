@@ -57,4 +57,32 @@ export interface SocialLink {
   name: string;
   url: string;
   external?: boolean;
+  isConfigured?: boolean;
+  statusNote?: string;
 }
+
+export interface TeamMember {
+  id: string;
+  number: string;
+  name: string;
+  role: string;
+  tier: 'mentor' | 'core';
+  badgeLabel: string;
+  subtitleRole: string;
+  companyPill?: string;
+  discipline: string;
+  bio: string;
+  fullBio?: string;
+  tagline?: string;
+  affiliation?: string;
+  category: 'leadership' | 'development' | 'marketing' | 'video' | 'operations';
+  experienceBadge?: string;
+  capabilities: string[];
+  initials: string;
+  status: string;
+  socials?: {
+    name: string;
+    url: string;
+  }[];
+}
+

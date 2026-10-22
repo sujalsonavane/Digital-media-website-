@@ -159,23 +159,31 @@ export default function TestimonialsSection() {
     <section
       ref={sectionRef}
       id="testimonials"
-      aria-label="Client Testimonials and Verified Outcomes"
+      aria-label="Concept Testimonials and Representative Portfolio Outcomes"
       className="testimonials-section relative z-20 bg-white text-[#161d25] rounded-[var(--r-panel)] px-[var(--inset)] py-16 sm:py-24 md:py-28 overflow-hidden shadow-sm"
     >
       <div className="max-w-6xl w-full mx-auto">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 sm:mb-16 gap-3">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 sm:mb-12 gap-3">
           <div>
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#ff003d] block mb-2">
-              [ 05 // Verified Endorsements ]
+              [ 05 // Concept Benchmarks & Demonstration Reviews ]
             </span>
             <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-[#161d25] leading-none">
               CLIENT TESTIMONIALS.
             </h2>
           </div>
           <span className="text-xs sm:text-sm font-semibold text-[#8c9196] tracking-wider uppercase">
-            Quantifiable Outcomes & Verified Leadership Reviews
+            Representative Demonstration Feedback & Concept Project Metrics
           </span>
+        </div>
+
+        {/* Honest Demo Content Disclaimer Notice Banner */}
+        <div className="mb-8 p-3.5 sm:p-4 rounded-2xl bg-[#f4f5f8] border border-[#e2e4e9] text-xs text-[#555d65] flex items-start sm:items-center gap-3 shadow-xs">
+          <span className="text-sm font-bold text-[#ff003d] shrink-0 mt-0.5 sm:mt-0" aria-hidden="true">ⓘ</span>
+          <p className="leading-relaxed">
+            <strong>Portfolio Demonstration Notice:</strong> The testimonials, partner names, and quantitative metrics below represent illustrative concept models designed to showcase our architecture and quality standards. Verified commercial client references and case metrics are provided upon enterprise inquiry.
+          </p>
         </div>
 
         {/* Featured Quote Stage with Scroll Animation */}
@@ -187,80 +195,79 @@ export default function TestimonialsSection() {
               <span className="font-serif text-5xl sm:text-6xl leading-none text-[#ff003d] select-none">
                 “
               </span>
-              <span className="text-xs font-mono font-bold uppercase text-[#8c9196] tracking-wider">
-                {activeItem.company} // Verified Production Partner
-              </span>
-            </div>
-
-            {/* Quote Text */}
-            <blockquote className="font-display text-xl sm:text-2xl md:text-3xl font-extrabold text-[#161d25] leading-snug tracking-tight mb-8">
-              {activeItem.quote}
-            </blockquote>
-
-            {/* Author Byline */}
-            <div className="flex items-center gap-4 pt-6 border-t border-[#161d25]/10">
-              <div className="w-12 h-12 rounded-full bg-[#161d25] text-white flex items-center justify-center font-bold text-sm tracking-wide shrink-0 shadow-sm">
-                {activeItem.avatarText}
-              </div>
-              <div>
-                <div className="font-bold text-base text-[#161d25] tracking-tight">
-                  {activeItem.author}
-                </div>
-                <div className="text-xs text-[#8c9196] font-medium">
-                  {activeItem.title}, <span className="font-semibold text-[#161d25]">{activeItem.company}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Metric Highlight Card (Right 4) with Live Number Animation */}
-          <div className="lg:col-span-4 bg-[#161d25] text-white rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-center shadow-xl relative overflow-hidden">
-            <span className="text-[11px] font-mono uppercase tracking-widest text-[#ffa3b8] mb-2 block">
-              Quantifiable Impact
-            </span>
-            <div className="metric-animated-value font-display text-5xl sm:text-6xl font-black text-white tracking-tight my-2">
-              {activeItem.metric}
-            </div>
-            <span className="text-xs font-bold text-white/90 uppercase tracking-wider block">
-              {activeItem.metricLabel}
-            </span>
-            <span className="text-[10px] font-mono text-white/60 mt-3 pt-3 border-t border-white/10 w-full block">
-              Audited in {activeItem.year} Deployment
-            </span>
-          </div>
+          <span className="text-xs font-mono font-bold uppercase text-[#8c9196] tracking-wider">
+            {activeItem.company} {'// '}Concept Case Partner
+          </span>
         </div>
 
-        {/* Tab Selector Strip */}
-        <div className="testimonial-tabs-row grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
-          {TESTIMONIALS.map((item, idx) => {
-            const isSelected = activeIdx === idx;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setActiveIdx(idx)}
-                className={`testimonial-tab-btn p-4 rounded-2xl border text-left transition-all cursor-pointer ${
-                  isSelected
-                    ? 'bg-[#ff003d] text-white border-[#ff003d] shadow-md scale-[1.02]'
-                    : 'bg-white text-[#161d25] border-[#e7e7ea] hover:bg-[#f7f8fa]'
-                }`}
-              >
-                <div className="flex justify-between items-center mb-1">
-                  <span className="font-bold text-xs sm:text-sm tracking-tight truncate">
-                    {item.company}
-                  </span>
-                  <span className={`text-[10px] font-mono font-bold ${isSelected ? 'text-white' : 'text-[#ff003d]'}`}>
-                    {item.metric}
-                  </span>
-                </div>
-                <span className={`text-[11px] truncate block ${isSelected ? 'text-white/80' : 'text-[#8c9196]'}`}>
-                  {item.author}
-                </span>
-              </button>
-            );
-          })}
+        {/* Quote Text */}
+        <blockquote className="font-display text-xl sm:text-2xl md:text-3xl font-extrabold text-[#161d25] leading-snug tracking-tight mb-8">
+          {activeItem.quote}
+        </blockquote>
+
+        {/* Author Byline */}
+        <div className="flex items-center gap-4 pt-6 border-t border-[#161d25]/10">
+          <div className="w-12 h-12 rounded-full bg-[#161d25] text-white flex items-center justify-center font-bold text-sm tracking-wide shrink-0 shadow-sm">
+            {activeItem.avatarText}
+          </div>
+          <div>
+            <div className="font-bold text-base text-[#161d25] tracking-tight">
+              {activeItem.author}
+            </div>
+            <div className="text-xs text-[#8c9196] font-medium">
+              {activeItem.title}, <span className="font-semibold text-[#161d25]">{activeItem.company}</span>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+
+      {/* Metric Highlight Card (Right 4) with Live Number Animation */}
+      <div className="lg:col-span-4 bg-[#161d25] text-white rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center text-center shadow-xl relative overflow-hidden">
+        <span className="text-[11px] font-mono uppercase tracking-widest text-[#ffa3b8] mb-2 block">
+          Benchmark Target
+        </span>
+        <div className="metric-animated-value font-display text-5xl sm:text-6xl font-black text-white tracking-tight my-2">
+          {activeItem.metric}
+        </div>
+        <span className="text-xs font-bold text-white/90 uppercase tracking-wider block">
+          {activeItem.metricLabel}
+        </span>
+        <span className="text-[10px] font-mono text-white/60 mt-3 pt-3 border-t border-white/10 w-full block">
+          Demonstration benchmark for {activeItem.year} sprint
+        </span>
+      </div>
+    </div>
+
+        {/* Tab Selector Strip */ }
+  <div className="testimonial-tabs-row grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+    {TESTIMONIALS.map((item, idx) => {
+      const isSelected = activeIdx === idx;
+      return (
+        <button
+          key={item.id}
+          type="button"
+          onClick={() => setActiveIdx(idx)}
+          className={`testimonial-tab-btn p-4 rounded-2xl border text-left transition-all cursor-pointer ${isSelected
+            ? 'bg-[#ff003d] text-white border-[#ff003d] shadow-md scale-[1.02]'
+            : 'bg-white text-[#161d25] border-[#e7e7ea] hover:bg-[#f7f8fa]'
+            }`}
+        >
+          <div className="flex justify-between items-center mb-1">
+            <span className="font-bold text-xs sm:text-sm tracking-tight truncate">
+              {item.company}
+            </span>
+            <span className={`text-[10px] font-mono font-bold ${isSelected ? 'text-white' : 'text-[#ff003d]'}`}>
+              {item.metric}
+            </span>
+          </div>
+          <span className={`text-[11px] truncate block ${isSelected ? 'text-white/80' : 'text-[#8c9196]'}`}>
+            {item.author}
+          </span>
+        </button>
+      );
+    })}
+  </div>
+      </div >
+    </section >
   );
 }

@@ -1,11 +1,10 @@
 import HeroSection from '@/components/agency/HeroSection';
 import { StatementSection } from '@/components/agency/StatementSection';
-import ProcessSection from '@/components/agency/ProcessSection';
+import TeamSection from '@/components/agency/TeamSection';
 import { ProjectsSection } from '@/components/agency/ProjectsSection';
 import TestimonialsSection from '@/components/agency/TestimonialsSection';
 import { ArchiveSection } from '@/components/agency/ArchiveSection';
 import { ServicesSection } from '@/components/agency/ServicesSection';
-import ProjectEstimator from '@/components/agency/ProjectEstimator';
 import { EnquirySection } from '@/components/agency/EnquirySection';
 import { FooterSection } from '@/components/agency/FooterSection';
 import WhatsAppButton from '@/components/agency/WhatsAppButton';
@@ -19,8 +18,8 @@ export default function Home() {
       {/* 2. Positioning & Standard Statement Panel */}
       <StatementSection />
 
-      {/* 3. "How We Work" 4-Stage Sprint Methodology */}
-      <ProcessSection />
+      {/* 3. "Our Team" Studio Collective & Principals */}
+      <TeamSection />
 
       {/* 4. Featured Client Projects & Case Studies Showcase */}
       <ProjectsSection />
@@ -37,13 +36,10 @@ export default function Home() {
       {/* 8. Client Qualification & Direct Enquiry Band */}
       <EnquirySection />
 
-      {/* 9. Interactive Project Cost & Timeline Estimator (Moved After Inquiry) */}
-      <ProjectEstimator />
-
-      {/* 10. Studio Footer & Working Time */}
+      {/* 9. Studio Footer & Working Time */}
       <FooterSection />
 
-      {/* 11. Floating Direct WhatsApp Interaction */}
+      {/* 10. Floating Direct WhatsApp Interaction */}
       <WhatsAppButton />
     </div>
   );

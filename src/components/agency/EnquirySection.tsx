@@ -29,10 +29,12 @@ export const EnquirySection: React.FC = () => {
   const [budget, setBudget] = useState(BUDGET_OPTIONS[1]);
   const [timeline, setTimeline] = useState(TIMELINE_OPTIONS[1]);
   const [message, setMessage] = useState('');
+  const [honeypot, setHoneypot] = useState('');
   const [agreedConsent, setAgreedConsent] = useState(true);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [deliveryStatus, setDeliveryStatus] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const toggleService = (category: ServiceCategory) => {
@@ -85,6 +87,7 @@ export const EnquirySection: React.FC = () => {
           budget,
           timeline,
           message: message.trim(),
+          website: honeypot, // Honeypot field
         }),
       });
 
@@ -94,6 +97,7 @@ export const EnquirySection: React.FC = () => {
         throw new Error(data.error || 'Server error occurred while submitting.');
       }
 
+      setDeliveryStatus(data.deliveryStatus || 'unconfigured_local_logged');
       setIsSubmitted(true);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Network failure. Please email us directly.';
@@ -109,6 +113,8 @@ export const EnquirySection: React.FC = () => {
     setEmail('');
     setCompany('');
     setMessage('');
+    setHoneypot('');
+    setDeliveryStatus(null);
     setErrorMessage(null);
     setIsSubmitted(false);
   };
@@ -156,6 +162,20 @@ export const EnquirySection: React.FC = () => {
                 noValidate
                 className="flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 max-w-4xl mx-auto w-full animate-card-enter"
               >
+                {/* Anti-spam honeypot field (hidden from legitimate users) */}
+                <div className="sr-only" aria-hidden="true" style={{ display: 'none', position: 'absolute', left: '-9999px' }}>
+                  <label htmlFor="hp-website-s1">Website</label>
+                  <input
+                    id="hp-website-s1"
+                    type="text"
+                    name="website"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
                 {/* Name Capsule Input */}
                 <div className="relative w-full md:flex-1">
                   <input
@@ -204,8 +224,8 @@ export const EnquirySection: React.FC = () => {
               </form>
             )}
 
-            {/* Direct WhatsApp Instant Consultation Prompt */}
-            {step === 1 && agencyConfig.contact.whatsapp && (
+            {/* Direct WhatsApp Instant Consultation Prompt (Only if configured) */}
+            {step === 1 && agencyConfig.contact.isWhatsAppConfigured && agencyConfig.contact.whatsapp && (
               <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 text-xs sm:text-sm font-semibold text-white/95">
                 <span>Prefer immediate conversation?</span>
                 <a
@@ -243,6 +263,20 @@ export const EnquirySection: React.FC = () => {
                   >
                     ← Back
                   </button>
+                </div>
+
+                {/* Anti-spam honeypot field (hidden from legitimate users) */}
+                <div className="sr-only" aria-hidden="true" style={{ display: 'none', position: 'absolute', left: '-9999px' }}>
+                  <label htmlFor="hp-website-s2">Website</label>
+                  <input
+                    id="hp-website-s2"
+                    type="text"
+                    name="website"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
                 </div>
 
                 {/* Company Name */}
@@ -376,14 +410,20 @@ export const EnquirySection: React.FC = () => {
           <div className="animate-card-enter max-w-4xl mx-auto">
             <div className="mb-8">
               <span className="text-xs font-bold uppercase tracking-widest bg-white text-[#ff003d] px-4 py-1.5 rounded-full inline-block mb-3">
-                ENQUIRY RECEIVED & LOGGED
+                {deliveryStatus === 'delivered' ? 'ENQUIRY TRANSMITTED' : 'BRIEF RECORDED (LOCAL DEV RECEIVER)'}
               </span>
               <h3 className="font-display text-3xl sm:text-5xl font-extrabold text-white">
                 Thank you, {name}!
               </h3>
               <p className="text-base sm:text-lg text-white/90 mt-2 max-w-2xl mx-auto">
-                We have received your brief for <strong className="text-white underline">{selectedServices.join(' & ')}</strong> ({budget}, {timeline}). We will contact you at <strong className="text-white underline">{email}</strong> within 24 hours.
+                We have recorded your brief for <strong className="text-white underline">{selectedServices.join(' & ')}</strong> ({budget}, {timeline}).
               </p>
+              {deliveryStatus !== 'delivered' && (
+                <div className="mt-4 p-4 rounded-2xl bg-black/30 border border-white/20 max-w-xl mx-auto text-xs text-white/90 text-left">
+                  <span className="font-bold text-white block mb-1">ℹ Notice on Delivery Integration:</span>
+                  Your brief has been safely recorded in the local development receiver. External email dispatch is pending provider setup (RESEND_API_KEY). For immediate confirmation, please also reach out to <strong className="text-white underline">{agencyConfig.contact.email}</strong>.
+                </div>
+              )}
             </div>
 
             {/* 4 Cards (Matching Awake Reference frame 020: Contact us, Representative office, Development team, Working time) */}
@@ -393,7 +433,7 @@ export const EnquirySection: React.FC = () => {
                   <span className="text-xs font-bold uppercase text-[#8c9196] block mb-2">Direct Studio Contact</span>
                   <p className="font-bold text-sm text-[#161d25] break-words mb-2">{agencyConfig.contact.email}</p>
                 </div>
-                {agencyConfig.contact.whatsapp && (
+                {agencyConfig.contact.isWhatsAppConfigured && agencyConfig.contact.whatsapp ? (
                   <a
                     href={agencyConfig.contact.whatsappUrl}
                     target="_blank"
@@ -402,6 +442,10 @@ export const EnquirySection: React.FC = () => {
                   >
                     <span>💬 WhatsApp: {agencyConfig.contact.whatsapp} ↗</span>
                   </a>
+                ) : (
+                  <span className="text-[11px] text-[#8c9196] block pt-2 border-t border-neutral-100">
+                    WhatsApp direct line pending business verification
+                  </span>
                 )}
               </div>
 

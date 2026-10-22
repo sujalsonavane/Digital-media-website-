@@ -5,11 +5,25 @@ import { agencyConfig } from '@/data/agencyData';
 import { gsap, prefersReducedMotion } from '@/utils/motion';
 import { useGSAP } from '@gsap/react';
 
+const STATEMENT_1_LINES = [
+  'We design and build',
+  'websites, brand systems,',
+  'and digital products that',
+  'work as hard as they look.',
+];
+
+const STATEMENT_2_LINES = [
+  "Whether you're launching",
+  'a product, rebuilding a',
+  'brand, or replacing a tired',
+  'site, one team takes it',
+  'from sketch to live build.',
+];
+
 export const StatementSection: React.FC = () => {
   const { philosophy } = agencyConfig;
   const sectionRef = useRef<HTMLElement>(null);
-  const textRef = useRef<HTMLHeadingElement>(null);
-  const subtextRef = useRef<HTMLParagraphElement>(null);
+  const stackRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<SVGSVGElement>(null);
   const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
 
@@ -27,82 +41,87 @@ export const StatementSection: React.FC = () => {
 
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
+      if (prefersReducedMotion()) {
+        gsap.set('.statement-line', { clearProps: 'all', rotationY: 0, opacity: 1 });
+        return;
+      }
 
       const isMobile = window.innerWidth < 768;
+      const s1Lines = gsap.utils.toArray<HTMLElement>('.statement-1 .statement-line');
+      const s2Lines = gsap.utils.toArray<HTMLElement>('.statement-2 .statement-line');
 
-      if (!isMobile) {
-        // Desktop 3D Perspective Scrub (Matching Awake Reference)
-        gsap.fromTo(
-          textRef.current,
-          {
-            rotateX: -24,
-            z: -60,
-            opacity: 0.25,
-            transformPerspective: 1600,
-            transformOrigin: '50% 50%',
-          },
-          {
-            rotateX: 0,
-            z: 0,
-            opacity: 1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 82%',
-              end: 'center 45%',
-              scrub: 1,
-            },
-          }
-        );
+      if (!s1Lines.length || !s2Lines.length) return;
 
-        // Technical CAD Vector Background Rotation Scrub
+      // 3D Cylinder radius along Z-axis (exact match to Awake Agency reference)
+      const zRadius = isMobile ? '-340px' : '-620px';
+
+      // Set transformOrigin deep behind each line
+      gsap.set([s1Lines, s2Lines], {
+        transformOrigin: `50% 50% ${zRadius}`,
+        backfaceVisibility: 'hidden',
+        transformStyle: 'preserve-3d',
+      });
+
+      // Statement 1 starts front and center (0deg), Statement 2 rotated 105deg to the right
+      gsap.set(s1Lines, { rotationY: 0, opacity: 1 });
+      gsap.set(s2Lines, { rotationY: 105, opacity: 0 });
+
+      const scrollDistance = isMobile ? window.innerHeight * 1.0 : window.innerHeight * 1.5;
+
+      // Pinned scroll scrub timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'center center',
+          end: () => `+=${scrollDistance}`,
+          pin: true,
+          scrub: 0.6,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+        defaults: { ease: 'power2.inOut', duration: 1 },
+      });
+
+      // Subtle hold at beginning
+      tl.to({}, { duration: 0.3 });
+
+      // Rotate Statement 1 out to the left (-105deg) with line stagger
+      tl.to(s1Lines, {
+        rotationY: -105,
+        opacity: 0,
+        stagger: 0.12,
+        duration: 1,
+      });
+
+      // Simultaneously rotate Statement 2 in from the right (0deg) with line stagger
+      tl.to(
+        s2Lines,
+        {
+          rotationY: 0,
+          opacity: 1,
+          stagger: 0.12,
+          duration: 1,
+        },
+        '<'
+      );
+
+      // Hold at end before unpinning
+      tl.to({}, { duration: 0.4 });
+
+      // Blueprint vector background smooth rotation scrub
+      if (bgRef.current) {
         gsap.to(bgRef.current, {
-          rotate: 18,
-          scale: 1.06,
+          rotate: 32,
+          scale: 1.08,
           ease: 'none',
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1.8,
+            scrub: 1.5,
           },
         });
-      } else {
-        // Mobile 2D Smooth Scroll Fade & Slide
-        gsap.fromTo(
-          textRef.current,
-          { opacity: 0.35, y: 24 },
-          {
-            opacity: 1,
-            y: 0,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 85%',
-              end: 'center 50%',
-              scrub: 0.8,
-            },
-          }
-        );
       }
-
-      // Secondary statement smooth entrance
-      gsap.fromTo(
-        subtextRef.current,
-        { opacity: 0.25, y: 18 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 70%',
-            end: 'center 40%',
-            scrub: 1,
-          },
-        }
-      );
     },
     { scope: sectionRef }
   );
@@ -172,38 +191,76 @@ export const StatementSection: React.FC = () => {
       <div className="absolute bottom-6 left-6 text-xs font-mono font-bold text-[#161d25]/30 select-none pointer-events-none">+</div>
       <div className="absolute bottom-6 right-6 text-xs font-mono font-bold text-[#161d25]/30 select-none pointer-events-none">+</div>
 
-      {/* Editorial Content (Pure Typography matching Awake Reference) */}
+      {/* Studio Philosophy Pill Badge */}
+      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-[#161d25]/12 text-[11px] font-bold uppercase tracking-widest text-[#161d25] mb-8 shadow-sm backdrop-blur-sm z-20">
+        <span className="w-2 h-2 rounded-full bg-[#ff003d] animate-pulse" aria-hidden="true" />
+        <span>{philosophy.badge || 'Our Philosophy'}</span>
+      </div>
+
+      {/* Accessible Screen Reader Announcement */}
+      <h2 className="sr-only">
+        We design and build websites, brand systems, and digital products that work as hard as they look. Whether you&apos;re launching a product, rebuilding a brand, or replacing a tired site, one team takes it from sketch to live build.
+      </h2>
+
+      {/* 3D Cylindrical Carousel Stack (Exact Match to Video 2 Reference) */}
       <div
+        ref={stackRef}
         style={{
           transform: `translate3d(${-mousePos.x * 12}px, ${-mousePos.y * 12}px, 0)`,
           transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+          perspective: '1600px',
+          transformStyle: 'preserve-3d',
         }}
-        className="relative max-w-4xl text-center z-10 px-4 flex flex-col items-center"
+        className="relative w-full max-w-5xl text-center z-10 px-4"
+        aria-hidden="true"
       >
-        {/* Studio Philosophy Pill Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-[#161d25]/12 text-[11px] font-bold uppercase tracking-widest text-[#161d25] mb-8 shadow-sm backdrop-blur-sm">
-          <span className="w-2 h-2 rounded-full bg-[#ff003d] animate-pulse" aria-hidden="true" />
-          <span>Our Philosophy</span>
+        <div className="grid grid-cols-1 grid-rows-1 place-items-center w-full">
+          {/* Statement 1 (We design and build...) */}
+          <div
+            className="statement-block statement-1 [grid-area:1/1] w-full flex flex-col items-center justify-center text-center font-display text-[clamp(1.4rem,4.2vw,3.25rem)] font-bold tracking-tight text-[#161d25] leading-[1.2]"
+            style={{ transformStyle: 'preserve-3d' }}
+          >
+            {STATEMENT_1_LINES.map((line, idx) => (
+              <span
+                key={idx}
+                className={`statement-line block will-change-transform ${
+                  idx === STATEMENT_1_LINES.length - 1
+                    ? 'text-[#ff003d] font-black underline decoration-[#ff003d]/30 underline-offset-8'
+                    : ''
+                }`}
+                style={{
+                  backfaceVisibility: 'hidden',
+                  transformStyle: 'preserve-3d',
+                }}
+              >
+                {line}
+              </span>
+            ))}
+          </div>
+
+          {/* Statement 2 (Whether you're launching...) */}
+          <div
+            className="statement-block statement-2 [grid-area:1/1] w-full flex flex-col items-center justify-center text-center font-display text-[clamp(1.4rem,4.2vw,3.25rem)] font-bold tracking-tight text-[#161d25] leading-[1.2]"
+            style={{ transformStyle: 'preserve-3d' }}
+          >
+            {STATEMENT_2_LINES.map((line, idx) => (
+              <span
+                key={idx}
+                className={`statement-line block will-change-transform ${
+                  idx === STATEMENT_2_LINES.length - 1
+                    ? 'text-[#ff003d] font-black'
+                    : ''
+                }`}
+                style={{
+                  backfaceVisibility: 'hidden',
+                  transformStyle: 'preserve-3d',
+                }}
+              >
+                {line}
+              </span>
+            ))}
+          </div>
         </div>
-
-        <h2
-          ref={textRef}
-          style={{ willChange: 'transform, opacity' }}
-          className="statement-text font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-[#161d25] leading-[1.16] mb-8"
-        >
-          <span>We design and build websites,</span>{' '}
-          <span className="block sm:inline">apps, and digital media that</span>{' '}
-          <span className="text-[#ff003d] font-black underline decoration-[#ff003d]/30 underline-offset-8 block sm:inline">
-            work as hard as they look.
-          </span>
-        </h2>
-
-        <p
-          ref={subtextRef}
-          className="statement-subtext max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-[#5a626a] font-normal leading-relaxed"
-        >
-          {philosophy.subtext}
-        </p>
       </div>
     </section>
   );

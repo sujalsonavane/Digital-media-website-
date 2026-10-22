@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 880" width="760" height="880">
+  <defs>
+    <filter id="shadow-video" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="24" stdDeviation="22" flood-color="#000000" flood-opacity="0.32" />
+    </filter>
+    <radialGradient id="video-lens-flare" cx="60%" cy="40%" r="70%">
+      <feStop offset="0%" stop-color="#ff003d" stop-opacity="0.45" />
+      <feStop offset="45%" stop-color="#2a0010" stop-opacity="0.8" />
+      <feStop offset="85%" stop-color="#0d1117" stop-opacity="1" />
+    </radialGradient>
+  </defs>
+
+  <!-- Container Base -->
+  <rect width="760" height="880" fill="#e7e7ea" rx="36" />
+
+  <!-- Centered Production Monitor Window -->
+  <g transform="translate(55, 80)" filter="url(#shadow-video)">
+    <!-- Main Screen Body -->
+    <rect width="650" height="720" rx="24" fill="#0d1117" stroke="rgba(255,255,255,0.14)" stroke-width="2" />
+    
+    <!-- Cinematic Lens Flare Background -->
+    <rect width="650" height="720" rx="24" fill="url(#video-lens-flare)" />
+
+    <!-- Rule of Thirds Cinematic Framing Lines -->
+    <line x1="216" y1="0" x2="216" y2="720" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="6 6" />
+    <line x1="433" y1="0" x2="433" y2="720" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="6 6" />
+    <line x1="0" y1="240" x2="650" y2="240" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="6 6" />
+    <line x1="0" y1="480" x2="650" y2="480" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="6 6" />
+
+    <!-- Top HUD Bar -->
+    <g transform="translate(36, 40)">
+      <g>
+        <circle cx="10" cy="8" r="6" fill="#ff003d" />
+        <text x="26" y="14" font-family="ui-monospace, SFMono-Regular, monospace" font-size="16" font-weight="900" letter-spacing="0.1em" fill="#ff003d">REC ●</text>
+      </g>
+      <text x="230" y="14" font-family="ui-monospace, monospace" font-size="14" font-weight="700" letter-spacing="0.12em" fill="rgba(255,255,255,0.9)">4K RAW 24FPS</text>
+      <text x="440" y="14" font-family="ui-monospace, monospace" font-size="14" font-weight="700" letter-spacing="0.08em" fill="rgba(255,255,255,0.7)">TC 00:04:18:12</text>
+    </g>
+
+    <!-- Center Reticle / Crosshair Target -->
+    <g transform="translate(325, 360)">
+      <circle cx="0" cy="0" r="48" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" />
+      <circle cx="0" cy="0" r="14" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1" />
+      <circle cx="0" cy="0" r="4" fill="#ff003d" />
+      <line x1="-65" y1="0" x2="-20" y2="0" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+      <line x1="20" y1="0" x2="65" y2="0" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+      <line x1="0" y1="-65" x2="0" y2="-20" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+      <line x1="0" y1="20" x2="0" y2="65" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+      
+      <!-- Framing Corner Brackets -->
+      <path d="M -160 -110 L -180 -110 L -180 -90" fill="none" stroke="#ffffff" stroke-width="2.5" />
+      <path d="M 160 -110 L 180 -110 L 180 -90" fill="none" stroke="#ffffff" stroke-width="2.5" />
+      <path d="M -160 110 L -180 110 L -180 90" fill="none" stroke="#ffffff" stroke-width="2.5" />
+      <path d="M 160 110 L 180 110 L 180 90" fill="none" stroke="#ffffff" stroke-width="2.5" />
+    </g>
+
+    <!-- Shutter & Sensor Meta Overlay -->
+    <g transform="translate(48, 560)">
+      <text x="0" y="0" font-family="system-ui, sans-serif" font-size="28" font-weight="900" letter-spacing="-0.02em" fill="#ffffff">CHRONO LUXE REEL</text>
+      <text x="0" y="26" font-family="ui-monospace, monospace" font-size="12" font-weight="600" letter-spacing="0.08em" fill="rgba(255,255,255,0.6)">COLOR GRADE // 35MM ANAMORPHIC SIMULATION</text>
+    </g>
+
+    <!-- Bottom HUD Bar / Audio Telemetry Meters -->
+    <g transform="translate(0, 630)">
+      <rect width="650" height="90" rx="0" fill="rgba(0,0,0,0.55)" />
+      <line x1="0" y1="0" x2="650" y2="0" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+
+      <g transform="translate(48, 48)">
+        <text x="0" y="0" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="rgba(255,255,255,0.85)">AUDIO CH 1/2</text>
+        <g transform="translate(140, -12)">
+          <rect x="0" y="0" width="8" height="16" rx="2" fill="#27c93f" />
+          <rect x="12" y="-4" width="8" height="20" rx="2" fill="#27c93f" />
+          <rect x="24" y="-8" width="8" height="24" rx="2" fill="#27c93f" />
+          <rect x="36" y="-12" width="8" height="28" rx="2" fill="#27c93f" />
+          <rect x="48" y="-16" width="8" height="32" rx="2" fill="#ffbd2e" />
+          <rect x="60" y="-18" width="8" height="34" rx="2" fill="#ff003d" />
+        </g>
+        <text x="440" y="0" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#25D366">SIGNAL LOCK</text>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -6,6 +6,26 @@ import { agencyConfig } from '@/data/agencyData';
 import { gsap, prefersReducedMotion } from '@/utils/motion';
 import { useGSAP } from '@gsap/react';
 
+// Interactive Character Swap Component (Matching Awake Agency Physics)
+const InteractiveWord: React.FC<{ text: string; className?: string }> = ({ text, className = '' }) => {
+  return (
+    <span className={`inline-block select-none cursor-default ${className}`}>
+      {text.split('').map((char, index) => (
+        <span
+          key={index}
+          data-swap-char
+          className="inline-block overflow-hidden relative align-baseline pointer-events-auto"
+          style={{ verticalAlign: 'baseline' }}
+        >
+          <span className="swap-char-inner inline-block will-change-transform">
+            {char === ' ' ? '\u00A0' : char}
+          </span>
+        </span>
+      ))}
+    </span>
+  );
+};
+
 export default function HeroSection() {
   const [loadPercent, setLoadPercent] = useState<number>(0);
   const [isLoaderFinished, setIsLoaderFinished] = useState<boolean>(false);
@@ -50,6 +70,81 @@ export default function HeroSection() {
     const animFrame = requestAnimationFrame(updateCounter);
     return () => cancelAnimationFrame(animFrame);
   }, []);
+
+  // Interactive Character Sweep & Kick Physics on Mouse Move (Exact Video 1 Match)
+  useEffect(() => {
+    if (!isLoaderFinished || prefersReducedMotion()) return;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    const charParents = container.querySelectorAll<HTMLElement>('[data-swap-char]');
+    const charMap = new Map<HTMLElement, HTMLElement>();
+    const allCharInners: HTMLElement[] = [];
+
+    charParents.forEach((parent) => {
+      const inner = parent.querySelector<HTMLElement>('.swap-char-inner');
+      if (inner) {
+        charMap.set(parent, inner);
+        allCharInners.push(inner);
+      }
+    });
+
+    let lastX: number | null = null;
+    let dir = 1;
+    let currentTarget: HTMLElement | null = null;
+
+    const handlePointerMove = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') return;
+      if (lastX !== null && e.clientX !== lastX) {
+        dir = e.clientX > lastX ? 1 : -1;
+      }
+      lastX = e.clientX;
+
+      const hit = document.elementFromPoint(e.clientX, e.clientY);
+      const swapParent = hit?.closest<HTMLElement>('[data-swap-char]');
+      const targetChar = swapParent ? charMap.get(swapParent) ?? null : null;
+
+      if (!targetChar || targetChar === currentTarget) {
+        currentTarget = targetChar;
+        return;
+      }
+      currentTarget = targetChar;
+
+      // Kinetic sweep & wrap kick with elastic landing ease
+      gsap.killTweensOf(targetChar);
+      gsap.timeline()
+        .to(targetChar, {
+          xPercent: 100 * dir,
+          duration: 0.18,
+          ease: 'power2.in',
+        })
+        .set(targetChar, {
+          xPercent: -100 * dir,
+        })
+        .to(targetChar, {
+          xPercent: 0,
+          duration: 0.55,
+          ease: 'elastic.out(1, 0.55)',
+        });
+    };
+
+    const handlePointerLeave = () => {
+      currentTarget = null;
+      lastX = null;
+    };
+
+    container.addEventListener('pointermove', handlePointerMove);
+    container.addEventListener('pointerleave', handlePointerLeave);
+
+    return () => {
+      container.removeEventListener('pointermove', handlePointerMove);
+      container.removeEventListener('pointerleave', handlePointerLeave);
+      gsap.killTweensOf(allCharInners);
+      gsap.set(allCharInners, { xPercent: 0 });
+      charMap.clear();
+    };
+  }, [isLoaderFinished]);
 
   // Coordinated GSAP Headline, Copy & Meta Entrance
   useGSAP(
@@ -129,7 +224,7 @@ export default function HeroSection() {
       {/* Top Navbar */}
       <HeaderNav />
 
-      {/* Monumental Headline & Studio Kicker Lockup (Exact Awake Reference Layout) */}
+      {/* Monumental Headline & Studio Kicker Lockup with Interactive Character Physics */}
       <h1
         aria-label="We build websites people remember. Luminous Digital Studio."
         className="my-auto py-4 sm:py-6 z-[5] flex flex-col justify-center font-normal"
@@ -139,23 +234,23 @@ export default function HeroSection() {
           {/* Row 1: WE (left) ... BUILD (right) */}
           <div className="overflow-hidden py-1">
             <div className="headline-line flex justify-between items-baseline w-full tracking-[-0.03em]">
-              <span>WE</span>
-              <span>BUILD</span>
+              <InteractiveWord text="WE" />
+              <InteractiveWord text="BUILD" />
             </div>
           </div>
 
           {/* Row 2: WEBSITES (left) ... PEOPLE (right) */}
           <div className="overflow-hidden py-1">
             <div className="headline-line flex justify-between items-baseline w-full tracking-[-0.03em]">
-              <span>WEBSITES</span>
-              <span>PEOPLE</span>
+              <InteractiveWord text="WEBSITES" />
+              <InteractiveWord text="PEOPLE" />
             </div>
           </div>
 
           {/* Row 3: REMEMBER. (left) ... [Studio Kicker Paragraph] (right) */}
           <div className="overflow-hidden py-1">
             <div className="headline-line flex justify-between items-end w-full gap-8">
-              <span className="tracking-[-0.015em]">REMEMBER.</span>
+              <InteractiveWord text="REMEMBER." className="tracking-[-0.015em]" />
 
               {/* Studio Kicker Copy directly in Row 3 Right */}
               <div className="hero-kicker-text w-full sm:w-[19rem] md:w-[22rem] lg:w-[25rem] pb-1.5 font-normal normal-case tracking-normal">
@@ -172,23 +267,23 @@ export default function HeroSection() {
           {/* Row 1: WE ... BUILD */}
           <div className="overflow-hidden py-1">
             <div className="headline-line flex justify-between items-baseline w-full tracking-[-0.035em]">
-              <span>WE</span>
-              <span>BUILD</span>
+              <InteractiveWord text="WE" />
+              <InteractiveWord text="BUILD" />
             </div>
           </div>
 
           {/* Row 2: WEBSITES ... PEOPLE */}
           <div className="overflow-hidden py-1">
             <div className="headline-line flex justify-between items-baseline w-full tracking-[-0.035em]">
-              <span>WEBSITES</span>
-              <span>PEOPLE</span>
+              <InteractiveWord text="WEBSITES" />
+              <InteractiveWord text="PEOPLE" />
             </div>
           </div>
 
           {/* Row 3: REMEMBER. */}
           <div className="overflow-hidden py-1">
             <div className="headline-line flex justify-start items-baseline w-full tracking-[-0.02em]">
-              <span>REMEMBER.</span>
+              <InteractiveWord text="REMEMBER." />
             </div>
           </div>
 
