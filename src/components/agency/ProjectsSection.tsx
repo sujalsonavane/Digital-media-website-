@@ -2,37 +2,10 @@
 
 import React, { useRef } from 'react';
 import Link from 'next/link';
+import { CirclePlay } from 'lucide-react';
 import { projectsData } from '@/data/projects';
-import WebMockupArt from './art/WebMockupArt';
-import AppMockupArt from './art/AppMockupArt';
-import VideoMockupArt from './art/VideoMockupArt';
-import AnalyticsMockupArt from './art/AnalyticsMockupArt';
-import { ArtDirectionType } from '@/types/agency';
 import { gsap } from '@/utils/motion';
 import { useGSAP } from '@gsap/react';
-import GooeyDistortionView from './GooeyDistortionView';
-
-const PROJECT_IMAGES: Record<ArtDirectionType, string> = {
-  web: '/images/projects/web-aetheria.svg',
-  app: '/images/projects/app-orbital.svg',
-  video: '/images/projects/video-lumina.svg',
-  analytics: '/images/projects/analytics-synthesis.svg',
-};
-
-const renderArtComponent = (type: ArtDirectionType) => {
-  switch (type) {
-    case 'web':
-      return <WebMockupArt />;
-    case 'app':
-      return <AppMockupArt />;
-    case 'video':
-      return <VideoMockupArt />;
-    case 'analytics':
-      return <AnalyticsMockupArt />;
-    default:
-      return null;
-  }
-};
 
 export const ProjectsSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -123,26 +96,47 @@ export const ProjectsSection: React.FC = () => {
                 className="group block h-full rounded-[var(--r-card)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ff003d]"
               >
                 <div className="relative h-[clamp(280px,44vh,380px)] overflow-hidden rounded-[var(--r-card)] border border-[#161d25]/10 bg-[#e7e7ea] p-3 shadow-[0_12px_30px_rgba(22,29,37,0.06)] transition-[box-shadow,transform] duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_22px_44px_rgba(22,29,37,0.14)] sm:h-[clamp(320px,48vh,440px)] md:h-[clamp(340px,54vh,540px)]">
-                  <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-[calc(var(--r-card)-8px)]">
-                    <div className="h-full w-full transition-transform duration-500 ease-out group-hover:scale-[1.025]">
-                      <GooeyDistortionView
-                        imageSrc={PROJECT_IMAGES[project.artType]}
-                        alt={`${project.title} preview`}
-                        fallbackComponent={renderArtComponent(project.artType)}
-                        intensity={0.65}
-                        chromatic={0.7}
-                        radius={0.42}
-                      />
+                  <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-[calc(var(--r-card)-8px)] border border-[#161d25]/10 bg-[#f0f0ef] p-5 sm:p-7 md:p-8">
+                    <div
+                      className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border-[1px] border-[#161d25]/10 transition-transform duration-700 group-hover:scale-110 sm:h-72 sm:w-72"
+                      aria-hidden="true"
+                    />
+                    <div
+                      className="pointer-events-none absolute -bottom-20 -left-12 h-48 w-48 rounded-full bg-[#ff003d]/[0.07] transition-transform duration-700 group-hover:scale-110 sm:h-64 sm:w-64"
+                      aria-hidden="true"
+                    />
+
+                    <div className="relative flex items-center justify-between gap-3">
+                      <span className="rounded-full bg-white/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#161d25]">
+                        {project.category}
+                      </span>
+                      <span className="font-mono text-[10px] font-bold tracking-wider text-[#666f77]">
+                        {String(index + 1).padStart(2, '0')} / {String(projectsData.length).padStart(2, '0')}
+                      </span>
+                    </div>
+
+                    <div className="relative py-6">
+                      <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#777f85]">
+                        Luminous / Project archive
+                      </p>
+                      <p className="mt-2 font-display text-[clamp(5rem,12vw,9rem)] font-extrabold leading-[0.82] tracking-[-0.08em] text-[#161d25]">
+                        P<span className="text-[#ff003d]">{String(index + 1).padStart(2, '0')}</span>
+                      </p>
+                      <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.15em] text-[#777f85] sm:text-xs">
+                        Preview media not added yet
+                      </p>
+                    </div>
+
+                    <div className="relative flex items-center justify-between border-t border-[#161d25]/10 pt-4">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#777f85]">
+                        Project {index + 1}
+                      </span>
+                      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#ff003d] text-white shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+                        <CirclePlay size={22} strokeWidth={1.5} aria-hidden="true" />
+                      </span>
                     </div>
                   </div>
-
-                  <span className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#161d25] shadow-sm backdrop-blur">
-                    {project.category}
-                  </span>
-                  <span className="absolute right-5 top-5 rounded-full bg-[#161d25]/90 px-3 py-1.5 font-mono text-[10px] font-bold tracking-wider text-white backdrop-blur">
-                    {String(index + 1).padStart(2, '0')} / {String(projectsData.length).padStart(2, '0')}
-                  </span>
-                  <span className="absolute bottom-5 right-5 flex h-11 w-11 items-center justify-center rounded-full bg-[#ff003d] text-xl text-white shadow-lg transition-transform duration-300 group-hover:rotate-45 group-hover:scale-110">
+                  <span className="absolute bottom-5 right-5 flex h-10 w-10 translate-x-1 -translate-y-1 items-center justify-center rounded-full bg-[#161d25] text-lg text-white opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100">
                     ↗
                   </span>
                 </div>
