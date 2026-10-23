@@ -1,110 +1,48 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
-import { projectsData } from '@/data/agencyData';
-import WebMockupArt from './art/WebMockupArt';
-import AppMockupArt from './art/AppMockupArt';
-import VideoMockupArt from './art/VideoMockupArt';
-import AnalyticsMockupArt from './art/AnalyticsMockupArt';
-import { ArtDirectionType, ProjectItem } from '@/types/agency';
-import { gsap, prefersReducedMotion } from '@/utils/motion';
+import React, { useRef } from 'react';
+import Link from 'next/link';
+import { CirclePlay } from 'lucide-react';
+import { projectsData } from '@/data/projects';
+import { gsap } from '@/utils/motion';
 import { useGSAP } from '@gsap/react';
-import GooeyDistortionView from './GooeyDistortionView';
-
-const PROJECT_IMAGES: Record<ArtDirectionType, string> = {
-  web: '/images/projects/web-aetheria.svg',
-  app: '/images/projects/app-orbital.svg',
-  video: '/images/projects/video-lumina.svg',
-  analytics: '/images/projects/analytics-synthesis.svg',
-};
-
-const renderArtComponent = (type: ArtDirectionType) => {
-  switch (type) {
-    case 'web':
-      return <WebMockupArt />;
-    case 'app':
-      return <AppMockupArt />;
-    case 'video':
-      return <VideoMockupArt />;
-    case 'analytics':
-      return <AnalyticsMockupArt />;
-    default:
-      return null;
-  }
-};
 
 export const ProjectsSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-  const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
-
-  // Keyboard escape listener and scroll lock for case study modal
-  useEffect(() => {
-    if (activeProject) {
-      document.body.style.overflow = 'hidden';
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') setActiveProject(null);
-      };
-      window.addEventListener('keydown', handleKeyDown);
-      return () => {
-        document.body.style.overflow = '';
-        window.removeEventListener('keydown', handleKeyDown);
-      };
-    } else {
-      document.body.style.overflow = '';
-    }
-  }, [activeProject]);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      if (prefersReducedMotion()) {
-        if (pathRef.current) {
-          gsap.set(pathRef.current, { strokeDashoffset: 0 });
-        }
-        gsap.set('.case-card', { opacity: 1, y: 0 });
-        return;
-      }
+      const media = gsap.matchMedia();
 
-      // 1. Thick Pink Spline Ribbon Progressive Stroke Drawing
-      if (pathRef.current) {
-        try {
-          const pathLength = pathRef.current.getTotalLength() || 2400;
-          gsap.set(pathRef.current, {
-            strokeDasharray: pathLength,
-            strokeDashoffset: pathLength,
-          });
+      // Desktop: vertical page scrolling scrubs the project track from right to left.
+      // Touch screens and reduced-motion users retain a native horizontal scroll track.
+      media.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
+        const section = sectionRef.current;
+        const viewport = viewportRef.current;
+        const track = trackRef.current;
+        if (!section || !viewport || !track) return;
 
-          gsap.to(pathRef.current, {
-            strokeDashoffset: 0,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 75%',
-              end: 'bottom 80%',
-              scrub: 1.2,
-            },
-          });
-        } catch {
-          gsap.set(pathRef.current, { strokeDashoffset: 0 });
-        }
-      }
+        const getTravelDistance = () =>
+          Math.max(0, track.scrollWidth - viewport.clientWidth);
 
-      // 2. Project Card Reveal as They Enter View
-      gsap.fromTo(
-        '.case-card',
-        { opacity: 0, y: 45 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.16,
-          ease: 'power2.out',
+        gsap.to(track, {
+          x: () => -getTravelDistance(),
+          ease: 'none',
           scrollTrigger: {
-            trigger: '.case-grid',
-            start: 'top 82%',
+            trigger: section,
+            start: 'top top',
+            end: () => `+=${Math.max(getTravelDistance(), 1)}`,
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+            anticipatePin: 1,
           },
-        }
-      );
+        });
+      });
+
+      return () => media.revert();
     },
     { scope: sectionRef }
   );
@@ -113,234 +51,119 @@ export const ProjectsSection: React.FC = () => {
     <section
       ref={sectionRef}
       id="projects"
-      aria-label="Featured Client Projects"
-      className="projects-section relative bg-white text-[#161d25] rounded-[var(--r-panel)] px-[var(--inset)] py-14 sm:py-18 md:py-24 overflow-hidden shadow-sm"
+      aria-labelledby="projects-heading"
+      className="projects-section relative flex min-h-[min(860px,calc(100svh-2.5rem))] flex-col justify-between overflow-hidden rounded-[var(--r-panel)] bg-white px-[var(--inset)] py-8 text-[#161d25] shadow-sm sm:py-10 md:py-12"
     >
-      {/* Wide Pink Continuous Spline Ribbon */}
-      <svg
-        className="pink-spline-svg absolute top-[8%] left-[2%] w-[96%] h-[85%] pointer-events-none z-[1] hidden md:block"
-        viewBox="0 0 1000 1300"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <path
-          ref={pathRef}
-          d="M 120 80 C 450 120, 850 160, 820 440 C 790 680, 220 580, 180 840 C 140 1080, 720 1020, 760 1280"
-          stroke="#ffa3b8"
-          strokeWidth="32"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity="0.45"
-        />
-      </svg>
-
-      {/* Section Header */}
-      <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end mb-12 sm:mb-16 gap-3">
+      <div className="relative z-10 mb-6 flex flex-col items-start justify-between gap-4 sm:mb-8 md:flex-row md:items-end">
         <div>
-          <h2 className="section-title font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold uppercase tracking-tight [word-spacing:0.25em] text-[#161d25] leading-[0.95]">
-            OUR PROJECTS
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#ff003d] sm:text-xs">
+            Selected work / 01—04
+          </p>
+          <h2
+            id="projects-heading"
+            className="section-title font-display text-4xl font-extrabold uppercase leading-[0.94] tracking-tight text-[#161d25] sm:text-5xl md:text-6xl lg:text-7xl"
+          >
+            OUR PROJECTS<span className="text-[#ff003d]">.</span>
           </h2>
-          <p className="text-xs sm:text-sm font-semibold text-[#666f77] tracking-wider uppercase mt-2">
-            Selected Work & Architecture Prototypes (2025–2026)
+          <p className="mt-3 max-w-xl text-xs font-medium uppercase tracking-wider text-[#666f77] sm:text-sm">
+            Scroll to move through the work. Open any project to view its page.
           </p>
         </div>
-        <span className="text-xs font-mono font-bold text-[#ff003d] tracking-widest uppercase bg-[#ff003d]/10 px-3 py-1 rounded-full">
-          Click Card for Case Study ↗
+        <span className="inline-flex items-center gap-2 rounded-full border border-[#161d25]/10 bg-[#f0f0ef] px-3 py-2 text-[10px] font-mono font-bold uppercase tracking-wider text-[#161d25] sm:text-xs">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#ff003d]" />
+          {String(projectsData.length).padStart(2, '0')} projects
+          <span aria-hidden="true">↔</span>
         </span>
       </div>
 
-      {/* Asymmetric Case Grid */}
-      <div className="case-grid relative z-10 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 lg:gap-16">
-        {projectsData.map((project) => (
-          <article
-            key={project.id}
-            onClick={() => setActiveProject(project)}
-            className={`case-card group flex flex-col gap-4 cursor-pointer ${
-              project.stagger ? 'md:mt-24' : ''
-            }`}
-          >
-            <div className="block relative w-full aspect-[380/440] rounded-[var(--r-card)] overflow-hidden bg-[#e7e7ea] shadow-[0_15px_35px_rgba(22,29,37,0.07)] transition-all duration-400 ease-out group-hover:-translate-y-2 group-hover:shadow-[0_25px_50px_rgba(22,29,37,0.14)] flex items-center justify-center p-4 sm:p-6">
-              <span className="absolute top-4 left-4 sm:top-5 sm:left-5 px-3 py-1.5 bg-[#161d25]/90 backdrop-blur-md text-white text-[11px] font-bold tracking-wider uppercase rounded-full z-20 pointer-events-none">
-                {project.category}
-              </span>
+      <div
+        ref={viewportRef}
+        className="relative z-10 -mx-1 overflow-x-auto px-1 pb-3 no-scrollbar snap-x snap-mandatory"
+        aria-label="Horizontal project gallery"
+      >
+        <div
+          ref={trackRef}
+          className="flex w-max items-stretch gap-5 pr-[var(--inset)] sm:gap-7 md:gap-9"
+        >
+          {projectsData.map((project, index) => (
+            <article
+              key={project.id}
+              className="w-[min(82vw,420px)] shrink-0 snap-start md:w-[min(72vw,760px)]"
+            >
+              <Link
+                href={`/projects/${project.slug}`}
+                aria-label={`Open ${project.title}`}
+                className="group block h-full rounded-[var(--r-card)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ff003d]"
+              >
+                <div className="relative h-[clamp(280px,44vh,380px)] overflow-hidden rounded-[var(--r-card)] border border-[#161d25]/10 bg-[#e7e7ea] p-3 shadow-[0_12px_30px_rgba(22,29,37,0.06)] transition-[box-shadow,transform] duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_22px_44px_rgba(22,29,37,0.14)] sm:h-[clamp(320px,48vh,440px)] md:h-[clamp(340px,54vh,540px)]">
+                  <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-[calc(var(--r-card)-8px)] border border-[#161d25]/10 bg-[#f0f0ef] p-5 sm:p-7 md:p-8">
+                    <div
+                      className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border-[1px] border-[#161d25]/10 transition-transform duration-700 group-hover:scale-110 sm:h-72 sm:w-72"
+                      aria-hidden="true"
+                    />
+                    <div
+                      className="pointer-events-none absolute -bottom-20 -left-12 h-48 w-48 rounded-full bg-[#ff003d]/[0.07] transition-transform duration-700 group-hover:scale-110 sm:h-64 sm:w-64"
+                      aria-hidden="true"
+                    />
 
-              {project.conceptType && (
-                <span className="absolute top-4 right-4 sm:top-5 sm:right-5 px-2.5 py-1 bg-white/90 backdrop-blur-md text-[#161d25] text-[10px] font-mono font-bold tracking-wider uppercase rounded-full z-20 shadow-sm pointer-events-none">
-                  {project.conceptType.includes('Prototype') ? 'Prototype' : 'Case Study'}
-                </span>
-              )}
+                    <div className="relative flex items-center justify-between gap-3">
+                      <span className="rounded-full bg-white/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#161d25]">
+                        {project.category}
+                      </span>
+                      <span className="font-mono text-[10px] font-bold tracking-wider text-[#666f77]">
+                        {String(index + 1).padStart(2, '0')} / {String(projectsData.length).padStart(2, '0')}
+                      </span>
+                    </div>
 
-              <div className="w-full h-full flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-[1.03]">
-                <GooeyDistortionView
-                  imageSrc={PROJECT_IMAGES[project.artType]}
-                  alt={`${project.title} - ${project.category} preview`}
-                  fallbackComponent={renderArtComponent(project.artType)}
-                  intensity={0.85}
-                  chromatic={1.2}
-                  radius={0.44}
-                />
-              </div>
-            </div>
+                    <div className="relative py-6">
+                      <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[#777f85]">
+                        Luminous / Project archive
+                      </p>
+                      <p className="mt-2 font-display text-[clamp(5rem,12vw,9rem)] font-extrabold leading-[0.82] tracking-[-0.08em] text-[#161d25]">
+                        P<span className="text-[#ff003d]">{String(index + 1).padStart(2, '0')}</span>
+                      </p>
+                      <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.15em] text-[#777f85] sm:text-xs">
+                        Preview media not added yet
+                      </p>
+                    </div>
 
-            <div className="flex justify-between items-baseline pt-2">
-              <div>
-                <span className="text-xs font-bold text-[#8c9196] uppercase tracking-wider block mb-1">
-                  {project.category}
-                </span>
-                <h3 className="font-display text-xl sm:text-2xl font-extrabold text-[#161d25] tracking-tight group-hover:text-[#ff003d] transition-colors flex items-center gap-2">
-                  <span>{project.title}</span>
-                  <span className="text-sm opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
-                </h3>
-              </div>
-              <span className="text-xs sm:text-sm font-semibold text-[#8c9196]">
-                {project.discipline}
-              </span>
-            </div>
-          </article>
-        ))}
+                    <div className="relative flex items-center justify-between border-t border-[#161d25]/10 pt-4">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#777f85]">
+                        Project {index + 1}
+                      </span>
+                      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#ff003d] text-white shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+                        <CirclePlay size={22} strokeWidth={1.5} aria-hidden="true" />
+                      </span>
+                    </div>
+                  </div>
+                  <span className="absolute bottom-5 right-5 flex h-10 w-10 translate-x-1 -translate-y-1 items-center justify-center rounded-full bg-[#161d25] text-lg text-white opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100">
+                    ↗
+                  </span>
+                </div>
+
+                <div className="flex items-end justify-between gap-4 px-1 pt-4 sm:pt-5">
+                  <div>
+                    <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#8c9196]">
+                      Project {index + 1} · {project.category}
+                    </p>
+                    <h3 className="font-display text-2xl font-extrabold tracking-tight text-[#161d25] transition-colors duration-200 group-hover:text-[#ff003d] sm:text-3xl md:text-4xl">
+                      {project.title}
+                    </h3>
+                  </div>
+                  <span className="shrink-0 pb-1 text-[10px] font-mono uppercase tracking-wider text-[#666f77] sm:text-xs">
+                    Open project
+                  </span>
+                </div>
+              </Link>
+            </article>
+          ))}
+        </div>
       </div>
 
-      {/* Interactive Case Study Detail Modal */}
-      {activeProject && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${activeProject.title} Case Study`}
-          className="fixed inset-0 z-[1200] bg-black/75 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 md:p-10 animate-fade-in"
-          onClick={() => setActiveProject(null)}
-        >
-          <div
-            className="bg-[#111215] text-white rounded-3xl border border-white/15 max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-10 shadow-2xl relative select-text"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="flex justify-between items-start pb-6 border-b border-white/10 gap-4">
-              <div>
-                <div className="flex flex-wrap items-center gap-2 mb-2">
-                  <span className="px-3 py-1 rounded-full bg-[#ff003d] text-white text-[11px] font-bold uppercase tracking-wider">
-                    {activeProject.category}
-                  </span>
-                  <span className="px-3 py-1 rounded-full bg-white/10 text-white/80 text-[11px] font-mono uppercase tracking-wider">
-                    {activeProject.conceptType || 'Interactive Concept Prototype'}
-                  </span>
-                  {activeProject.year && (
-                    <span className="text-xs text-[#8c9196] font-mono">
-                      {'// '}{activeProject.year}
-                    </span>
-                  )}
-                </div>
-                <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">
-                  {activeProject.title}
-                </h2>
-                {activeProject.client && (
-                  <p className="text-xs sm:text-sm text-[#8c9196] mt-1 font-semibold uppercase tracking-wider">
-                    Concept Partner: {activeProject.client}
-                  </p>
-                )}
-              </div>
-
-              {/* Close Button */}
-              <button
-                type="button"
-                onClick={() => setActiveProject(null)}
-                aria-label="Close Case Study"
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-lg font-bold transition-all cursor-pointer shrink-0"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div className="py-6 space-y-6">
-              {/* Executive Overview */}
-              <div>
-                <h3 className="text-xs font-bold uppercase tracking-widest text-[#ff003d] mb-2">
-                  [ 01 // Concept Architecture Overview ]
-                </h3>
-                <p className="text-sm sm:text-base text-white/90 leading-relaxed font-normal">
-                  {activeProject.overview}
-                </p>
-              </div>
-
-              {/* Challenge & Solution Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-white/70 block mb-2">
-                    The Challenge
-                  </span>
-                  <p className="text-xs sm:text-sm text-white/80 leading-relaxed">
-                    {activeProject.challenge}
-                  </p>
-                </div>
-
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#ff003d] block mb-2">
-                    Engineered Solution
-                  </span>
-                  <p className="text-xs sm:text-sm text-white/80 leading-relaxed">
-                    {activeProject.solution}
-                  </p>
-                </div>
-              </div>
-
-              {/* Measured Impact Results */}
-              {activeProject.results && activeProject.results.length > 0 && (
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-[#ff003d] mb-3">
-                    [ 02 // Target Benchmarks & Concept Metrics ]
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {activeProject.results.map((res, i) => (
-                      <div
-                        key={i}
-                        className="bg-white/5 border border-white/10 rounded-xl p-4 text-center"
-                      >
-                        <span className="text-xs font-bold text-white tracking-wide">
-                          {res}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Tech Stack Pills */}
-              {activeProject.techStack && (
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-white/60 mb-2">
-                    Production Architecture
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {activeProject.techStack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-[11px] font-mono px-3 py-1 rounded-full bg-white/10 text-white/90 border border-white/15"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Modal Footer CTA */}
-            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <span className="text-xs text-[#8c9196] font-mono">
-                LUMINOUS CONCEPT PROTOTYPE ARCHIVE
-              </span>
-              <a
-                href="#cta"
-                onClick={() => setActiveProject(null)}
-                className="w-full sm:w-auto px-7 py-3 rounded-full bg-[#ff003d] text-white font-bold text-sm uppercase tracking-wider hover:bg-[#e00036] hover:scale-105 active:scale-95 transition-all text-center shadow-lg"
-              >
-                Discuss a Similar Build →
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
+      <div className="relative z-10 mt-5 flex items-center justify-between border-t border-[#161d25]/10 pt-4 text-[10px] font-mono uppercase tracking-wider text-[#8c9196] sm:mt-6 sm:pt-5">
+        <span>Scroll vertically · Gallery moves horizontally</span>
+        <span className="hidden sm:inline">Luminous Digital Studio / Work Index</span>
+      </div>
     </section>
   );
 };
