@@ -2,13 +2,13 @@
 
 import React, { useRef } from 'react';
 import Link from 'next/link';
-import { projectsData } from '@/data/agencyData';
+import { projectsData } from '@/data/projects';
 import WebMockupArt from './art/WebMockupArt';
 import AppMockupArt from './art/AppMockupArt';
 import VideoMockupArt from './art/VideoMockupArt';
 import AnalyticsMockupArt from './art/AnalyticsMockupArt';
 import { ArtDirectionType } from '@/types/agency';
-import { gsap, prefersReducedMotion } from '@/utils/motion';
+import { gsap } from '@/utils/motion';
 import { useGSAP } from '@gsap/react';
 import GooeyDistortionView from './GooeyDistortionView';
 
